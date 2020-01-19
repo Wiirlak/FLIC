@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "829755807511",
+    "firebase_url": "https://flic-d4896.firebaseio.com",
+    "project_id": "flic-d4896",
+    "storage_bucket": "flic-d4896.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:829755807511:android:f322a8434b5373e6520952",
+        "android_client_info": {
+          "package_name": "fr.esgi.flic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "829755807511-eb1goq7uemkvjr3p406pnk51eq2744s5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjyNlNkqTbB00bg6rHBe_tVv_3R-nC0pk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "829755807511-eb1goq7uemkvjr3p406pnk51eq2744s5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
