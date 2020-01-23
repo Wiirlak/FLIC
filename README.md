@@ -7,3 +7,4 @@ InApp, les différentes données seront répertoriée sous forme de catégorie, 
 
  - Utilisation du service : Awarness
  - Widget : Position du conjoint
+une dinguerie
