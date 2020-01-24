@@ -7,9 +7,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/flic_minimal_round"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/flic_minimal_nofill"
         android:supportsRtl="true"
         android:theme="@style/Theme.NoTitle">
         <activity android:name=".LinkActivity"></activity>
