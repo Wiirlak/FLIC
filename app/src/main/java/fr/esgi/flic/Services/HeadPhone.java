@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import androidx.annotation.NonNull;
+import fr.esgi.flic.DatabaseProvider;
 
 public class HeadPhone extends Service {
 
@@ -56,7 +57,9 @@ public class HeadPhone extends Service {
                                     boolean pluggedIn = headphoneState.getState() == HeadphoneState.PLUGGED_IN;
                                     String stateStr =
                                             "Headphones are " + (pluggedIn ? "plugged in" : "unplugged");
-                                    System.out.println(stateStr);
+                                    //System.out.println(stateStr);
+                                    DatabaseProvider.addDataHeadphone("notifications","headphone","", pluggedIn);
+
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {

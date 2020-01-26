@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import androidx.annotation.NonNull;
+import fr.esgi.flic.DatabaseProvider;
 
 public class Locations extends Service {
     public Locations() {
@@ -39,7 +40,7 @@ public class Locations extends Service {
         public void handleMessage(Message msg) {
             // Normally we would do some work here, like download a file.
             // For our sample, we just sleep for 5 seconds.
-            final int delay = 1000; //milliseconds
+            final int delay = 6000; //milliseconds
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable(){
                 public void run(){
@@ -49,7 +50,8 @@ public class Locations extends Service {
                                 @Override
                                 public void onSuccess(LocationResponse locationResponse) {
                                     android.location.Location loc = locationResponse.getLocation();
-                                    System.out.println("Alt :"+loc.getAltitude() +" Lat : "+loc.getLatitude()+ " Long :"+ loc.getLongitude());
+                                    //System.out.println("Alt :"+loc.getAltitude() +" Lat : "+loc.getLatitude()+ " Long :"+ loc.getLongitude());
+                                    DatabaseProvider.addDataLocation("notifications","localisation","", loc.getLatitude(),loc.getLongitude(),loc.getAltitude());
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
