@@ -49,7 +49,7 @@ public class DatabaseProvider {
         Map<String, Object> user = new HashMap<>();
         user.put("date", new Date());
         user.put("type", type);
-        user.put("user_id", "senyuhG15nVVusKgX9ul"); // user_id
+        user.put("user_id", "/user/"+"senyuhG15nVVusKgX9ul"); // user_id
         user.put("value", plugged);
 
 // Add a new document with a generated ID
