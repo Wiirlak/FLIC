@@ -14,4 +14,14 @@
 
     <string name="action_share">Share</string>
     <string name="action_reply">Reply</string>
+    <string name="channel_name">texte</string>
+    <string name="channel_description">Insane</string>
+
+    <string name="HEADPHONE_NOTIF">81</string>
+    <string name="HEADPHONE_TEXT">headphone</string>
+    <string name="HEADPHONE_CHANNEL">81</string>
+
+    <string name="LOCALISATION_NOTIF">82</string>
+    <string name="LOCALISATION_TEXT">localisation</string>
+    <string name="LOCALISATION_CHANNEL">82</string>
 </resources>

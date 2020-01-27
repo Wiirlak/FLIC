@@ -2,6 +2,7 @@
 package fr.esgi.flic.Services;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -19,7 +20,9 @@ import androidx.annotation.NonNull;
 import fr.esgi.flic.DatabaseProvider;
 
 public class Locations extends Service {
+    public static Context context;
     public Locations() {
+        context = this;
     }
 
     @Override
@@ -40,7 +43,7 @@ public class Locations extends Service {
         public void handleMessage(Message msg) {
             // Normally we would do some work here, like download a file.
             // For our sample, we just sleep for 5 seconds.
-            final int delay = 6000; //milliseconds
+            final int delay = 10000; //milliseconds
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable(){
                 public void run(){
@@ -51,7 +54,7 @@ public class Locations extends Service {
                                 public void onSuccess(LocationResponse locationResponse) {
                                     android.location.Location loc = locationResponse.getLocation();
                                     //System.out.println("Alt :"+loc.getAltitude() +" Lat : "+loc.getLatitude()+ " Long :"+ loc.getLongitude());
-                                    DatabaseProvider.addDataLocation("notifications","localisation","", loc.getLatitude(),loc.getLongitude(),loc.getAltitude());
+                                    DatabaseProvider.addDataLocation(context,"notifications","", loc.getLatitude(),loc.getLongitude(),loc.getAltitude());
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {

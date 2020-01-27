@@ -23,6 +23,7 @@ public class HeadPhone extends Service {
 
     public static Context context;
     public HeadPhone() {
+        context = this;
     }
 
     @Override
@@ -43,7 +44,7 @@ public class HeadPhone extends Service {
         public void handleMessage(Message msg) {
             // Normally we would do some work here, like download a file.
             // For our sample, we just sleep for 5 seconds.
-            final int delay = 1000; //milliseconds
+            final int delay = 8000; //milliseconds
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable(){
                 @Override
@@ -58,7 +59,7 @@ public class HeadPhone extends Service {
                                     String stateStr =
                                             "Headphones are " + (pluggedIn ? "plugged in" : "unplugged");
                                     //System.out.println(stateStr);
-                                    DatabaseProvider.addDataHeadphone("notifications","headphone","", pluggedIn);
+                                    DatabaseProvider.addDataHeadphone(context,"notifications","", pluggedIn);
 
                                 }
                             })
