@@ -1,4 +1,4 @@
-package fr.esgi.flic.Services;
+package fr.esgi.flic.services;
 
 import android.app.Service;
 import android.content.Context;
@@ -33,7 +33,7 @@ public class HeadPhone extends Service {
     }
 
     private Looper serviceLooper;
-    private HeadPhone.ServiceHandler serviceHandler;
+    private ServiceHandler serviceHandler;
 
     // Handler that receives messages from the thread
     private final class ServiceHandler extends Handler {
@@ -58,8 +58,8 @@ public class HeadPhone extends Service {
                                     boolean pluggedIn = headphoneState.getState() == HeadphoneState.PLUGGED_IN;
                                     String stateStr =
                                             "Headphones are " + (pluggedIn ? "plugged in" : "unplugged");
-                                    //System.out.println(stateStr);
-                                    DatabaseProvider.addDataHeadphone(context,"notifications","", pluggedIn);
+                                    System.out.println(stateStr);
+                                    //DatabaseProvider.addDataHeadphone(context,"notifications","", pluggedIn);
 
                                 }
                             })

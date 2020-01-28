@@ -1,24 +1,36 @@
 package fr.esgi.flic;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
-import fr.esgi.flic.Services.Database;
-import fr.esgi.flic.Services.HeadPhone;
-import fr.esgi.flic.Services.Locations;
+import fr.esgi.flic.services.Database;
+import fr.esgi.flic.services.HeadPhone;
+import fr.esgi.flic.services.Locations;
+import fr.esgi.flic.services.State;
 
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
+
+import com.google.android.gms.awareness.Awareness;
+import com.google.android.gms.awareness.fence.AwarenessFence;
+import com.google.android.gms.awareness.snapshot.DetectedActivityResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.ActivityRecognitionResult;
+import com.google.android.gms.location.ActivityTransition;
+import com.google.android.gms.location.ActivityTransitionRequest;
+import com.google.android.gms.location.DetectedActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -29,16 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         createNotificationChannel();
         setContentView(R.layout.activity_main);
-        HeadPhone.context = this;
-
-//        Intent connection = new Intent(this, LinkActivity.class);
-//        startActivity(connection);
-        Intent intent = new Intent(this, Locations.class);
-        startService(intent);
-        Intent headphone = new Intent(this, HeadPhone.class);
-        startService(headphone);
-        Intent database = new Intent(this, Database.class);
-        startService(database);
+        callAllIntent();
     }
 
 
@@ -76,4 +79,21 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
+
+    private void callAllIntent(){
+//        Intent connection = new Intent(this, LinkActivity.class);
+//        startActivity(connection);
+        Intent localisation = new Intent(this, Locations.class);
+        startService(localisation);
+        Intent headphone = new Intent(this, HeadPhone.class);
+        HeadPhone.context = this;
+        startService(headphone);
+        Intent state = new Intent(this, State.class);
+        State.context = this;
+        startService(state);
+        Intent database = new Intent(this, Database.class);
+        startService(database);
+    }
+
 }

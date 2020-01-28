@@ -1,4 +1,4 @@
-package fr.esgi.flic.Services;
+package fr.esgi.flic.services;
 
 import android.app.Service;
 import android.content.Context;
@@ -22,8 +22,8 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import fr.esgi.flic.NotificationsHeadPhone;
-import fr.esgi.flic.NotificationsLocalisation;
+import fr.esgi.flic.notifications.NotificationsHeadPhone;
+import fr.esgi.flic.notifications.NotificationsLocalisation;
 import fr.esgi.flic.R;
 
 public class Database extends Service {
@@ -44,7 +44,6 @@ public class Database extends Service {
     public void onCreate() {
         String coupled_id = "senyuhG15nVVusKgX9ul";
         final DocumentReference docRef = db.collection("user").document(coupled_id);
-        System.out.println("Ok boomer");
         db.collection("notifications")
                 .whereEqualTo("user_id", docRef)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -82,10 +81,8 @@ public class Database extends Service {
                                                     if (!document.isEmpty()) {
                                                         String type = document.getDocuments().get(0).get("type").toString();
                                                         if(type.equals(context.getResources().getString(R.string.HEADPHONE_TEXT))) {
-                                                            System.out.println("NIKe : la bac");
                                                             NotificationsHeadPhone.sendNotification(context,type,document.getDocuments().get(0).get("value").toString());
                                                         }else if(type.equals(context.getResources().getString(R.string.LOCALISATION_TEXT))) {
-                                                            System.out.println("NIKe : nah toi");
                                                             NotificationsLocalisation.sendNotification(context,type,document.getDocuments().get(0).get("value").toString());
                                                         }
 
@@ -107,6 +104,5 @@ public class Database extends Service {
                         });
                     }
                 });
-        System.out.println("fun");
     }
 }

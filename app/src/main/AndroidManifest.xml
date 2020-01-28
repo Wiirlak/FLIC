@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
 
     <dist:module dist:instant="true" />
 
@@ -26,15 +27,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NoTitle">
         <service
-            android:name=".Services.Database"
+            android:name=".services.State"
             android:enabled="true"
             android:exported="true"></service>
         <service
-            android:name=".Services.HeadPhone"
+            android:name=".services.Database"
             android:enabled="true"
             android:exported="true" />
         <service
-            android:name=".Services.Locations"
+            android:name=".services.HeadPhone"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".services.Locations"
             android:enabled="true"
             android:exported="true" />
 
