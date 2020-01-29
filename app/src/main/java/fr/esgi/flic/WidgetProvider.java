@@ -36,10 +36,21 @@ public class WidgetProvider extends AppWidgetProvider {
 
     private static final String TAG = "AppWidgetProvider";
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    //FirebaseHelper fbHelper = new FirebaseHelper(); //TODO retirer les lignes de code pour tester avant de livrer
 
     @Override
     public void onEnabled(Context context) {
         Log.d(TAG, "onEnabled");
+        /*Task test = (Task) fbHelper.get("notifications", "type", "headphone");
+        test.addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if(task.isSuccessful()) {
+                    QuerySnapshot result = (QuerySnapshot) task.getResult();
+                    System.out.println("RESULT = " + result.getDocuments());
+                }
+            }
+        });*/
 
     }
 
@@ -48,7 +59,7 @@ public class WidgetProvider extends AppWidgetProvider {
         final int N = appWidgetIds.length;
         SharedPreferences prefs = context.getApplicationContext().getSharedPreferences("data", 0);
 
-        String coupled_id = prefs.getString("coupled_id", "senyuhG15nVVusKgX9ul");
+        String coupled_id = prefs.getString("coupled_id", "senyuhG15nVVusKgX9ul"); //TODO remplacer avec une valeur id par défaut
         final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_flic);
 
         final DocumentReference docRef = db.collection("user").document(coupled_id);

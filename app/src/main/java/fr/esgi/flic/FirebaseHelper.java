@@ -10,18 +10,15 @@ public class FirebaseHelper {
     private static final String TAG = "AppWidgetProvider";
 
     public Object get(String collection, String field, String value) {
-        Task result = db.collection(collection).whereEqualTo(field, value).get();
-        return result.getResult();
+        return db.collection(collection).whereEqualTo(field, value).get();
     }
 
     public Object post(String collection, String id, Map<String, Object> data) {
-        Task result = db.collection(collection).document(id).set(data);
-        return result.getResult();
+        return db.collection(collection).document(id).set(data);
     }
 
     public Object delete(String collection, String id, Map<String, Object> data) {
-        Task result = db.collection(collection).document(id).delete();
-        return result.getResult();
+        return db.collection(collection).document(id).delete();
     }
 
 }
