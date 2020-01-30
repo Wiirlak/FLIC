@@ -31,7 +31,15 @@ public class LinkActivity extends AppCompatActivity {
 
         TextView idUser = findViewById(R.id.personnalID);
         //id_user = idUser.getText();
-        id_user = generateId();
+        if(true /**not in local storage-> first launch**/) {
+            id_user = generateId();
+
+            User nu = new User(id_user.toString());
+            db.post("user", nu.getId(), nu);
+        }else{
+            //getfromlocalstorage
+            id_user = generateId();
+        }
         idUser.setText(id_user);
         waitingMessage(false);
     }
