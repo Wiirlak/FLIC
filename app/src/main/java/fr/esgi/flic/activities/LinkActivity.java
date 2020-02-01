@@ -22,8 +22,6 @@ import fr.esgi.flic.utils.SPHelper;
 public class LinkActivity extends AppCompatActivity {
     FirebaseHelper db;
     ClipboardManager clipboard;
-    CharSequence id_user;
-    CharSequence id_partner; // can be null
     User user;
 
     @Override
@@ -35,23 +33,18 @@ public class LinkActivity extends AppCompatActivity {
         db = new FirebaseHelper();
 
         TextView idUser = findViewById(R.id.personnalID);
-        //id_user = idUser.getText();
-        //Usage : getSavedObjectFromPreference(context, "mPreference", "mObjectKey", (Type) SampleClass.class)
-        user = SPHelper.getSavedObjectFromPreference(getApplicationContext(), "mPreference", "mObjectKey", User.class);
+        user = SPHelper.getSavedUserFromPreference(getApplicationContext(), User.class);
         if(user == null) {
-            id_user = generateId();
-
-            User nu = new User(id_user.toString());
-            SPHelper.saveObjectToSharedPreference(getApplicationContext(), "mPreference", "mObjectKey", user);
-            db.post("user", nu.getId(), nu);
-            Toast.makeText(getApplicationContext(), "User créé !", Toast.LENGTH_SHORT).show();
+            user = new User();
+            user.setId(createId());
+            SPHelper.saveUserToSharedPreference(getApplicationContext(), user);
+            db.post("user", user.getId(), user);
         }else{
-            //getfromlocalstorage
-            id_user = generateId();
-            Toast.makeText(getApplicationContext(), "User existant !", Toast.LENGTH_SHORT).show();
+            TextView partner = findViewById(R.id.companionID);
+            partner.setText(user.getPartner_id());
         }
-        idUser.setText(id_user);
-        waitingMessage(false);
+        idUser.setText(user.getId());
+        waitingMessage(user.getPartner_id() != null);
     }
 
     @Override
@@ -61,7 +54,7 @@ public class LinkActivity extends AppCompatActivity {
     }
 
     public void onClickCopyLink(View view) {
-        ClipData clip = ClipData.newPlainText("FLIC_my_id", id_user);
+        ClipData clip = ClipData.newPlainText("FLIC_my_id", user.getId());
         //ClipData clip = ClipData.newPlainText("FLIC_my_id", "a899c435b"); // Test value
         clipboard.setPrimaryClip(clip);
         Toast.makeText(getApplicationContext(), "Ton id a été mis dans le presse-papier !", Toast.LENGTH_SHORT).show();
@@ -69,8 +62,9 @@ public class LinkActivity extends AppCompatActivity {
 
     public void setPartner(View view) {
         TextView partner = findViewById(R.id.companionID);
-        id_partner  = partner.getText();
-        db.post("user", id_user.toString(), "partner_id", "user/" + id_partner.toString());
+        user.setPartner_id(partner.getText().toString());
+        db.post("user", user.getId(), user);
+        SPHelper.saveUserToSharedPreference(getApplicationContext(), user);
 
         Toast.makeText(getApplicationContext(), "id envoyé", Toast.LENGTH_SHORT).show();
         waitingMessage(true);
@@ -79,15 +73,14 @@ public class LinkActivity extends AppCompatActivity {
     public void applyCopiedLinkOnStart() {
         if(!clipboard.hasPrimaryClip())
             return;
-        ClipData exemple = clipboard.getPrimaryClip();
         ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
-        id_partner = item.getText();
-        if (id_partner != null) {
-            if (id_partner.length() == 9) {
-                if (!id_partner.toString().equals(id_user.toString())) {
+        user.setPartner_id(item.getText().toString());
+        if (user.getPartner_id() != null) {
+            if (user.getPartner_id().length() == 9) {
+                if (!user.getPartner_id().equals(user.getId())) {
                     EditText idPartner = findViewById(R.id.companionID);
-                    idPartner.setText(id_partner);
-                    idPartner.setSelection(id_partner.length());
+                    idPartner.setText(user.getPartner_id());
+                    idPartner.setSelection(user.getPartner_id().length());
                 }
             }
         }
@@ -103,7 +96,6 @@ public class LinkActivity extends AppCompatActivity {
         }else{
             waitMessage.setVisibility(TextView.INVISIBLE);
         }
-
     }
 
     public String generateId(){
@@ -116,11 +108,12 @@ public class LinkActivity extends AppCompatActivity {
         return sb.toString();
     }
 
-    public void createId(){
+    public String createId(){
         String id;
         do {
             id = generateId();
         }while(!db.exist(id));
+        return id;
     }
 
 
