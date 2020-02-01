@@ -66,9 +66,9 @@ public class FirebaseHelper {
     }
 
 
-    public boolean exist(String id){
+    public boolean exist(String collection, String id){
         final boolean[] existing = new boolean[1];
-        DocumentReference docRef = db.collection("cities").document("SF");
+        DocumentReference docRef = db.collection(collection).document(id);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

@@ -112,7 +112,7 @@ public class LinkActivity extends AppCompatActivity {
         String id;
         do {
             id = generateId();
-        }while(!db.exist(id));
+        }while(!db.exist("user", id));
         return id;
     }
 
