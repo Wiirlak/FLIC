@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        Intent connection = new Intent(this, LinkActivity.class);
-//        startActivity(connection);
+        Intent connection = new Intent(this, LinkActivity.class);
+        startActivity(connection);
     }
 }
