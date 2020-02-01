@@ -1,14 +1,14 @@
-package fr.esgi.flic;
+package fr.esgi.flic.utils;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
+
+import fr.esgi.flic.object.User;
 
 public class FirebaseHelper {
     private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();

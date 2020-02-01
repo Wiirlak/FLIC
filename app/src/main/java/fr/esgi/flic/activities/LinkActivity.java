@@ -1,4 +1,4 @@
-package fr.esgi.flic;
+package fr.esgi.flic.activities;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -12,14 +12,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.Random;
+
+import fr.esgi.flic.R;
+import fr.esgi.flic.object.User;
+import fr.esgi.flic.utils.FirebaseHelper;
+import fr.esgi.flic.utils.SPHelper;
 
 public class LinkActivity extends AppCompatActivity {
     FirebaseHelper db;
     ClipboardManager clipboard;
     CharSequence id_user;
     CharSequence id_partner; // can be null
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,14 +36,19 @@ public class LinkActivity extends AppCompatActivity {
 
         TextView idUser = findViewById(R.id.personnalID);
         //id_user = idUser.getText();
-        if(true /**not in local storage-> first launch**/) {
+        //Usage : getSavedObjectFromPreference(context, "mPreference", "mObjectKey", (Type) SampleClass.class)
+        user = SPHelper.getSavedObjectFromPreference(getApplicationContext(), "mPreference", "mObjectKey", User.class);
+        if(user == null) {
             id_user = generateId();
 
             User nu = new User(id_user.toString());
+            SPHelper.saveObjectToSharedPreference(getApplicationContext(), "mPreference", "mObjectKey", user);
             db.post("user", nu.getId(), nu);
+            Toast.makeText(getApplicationContext(), "User créé !", Toast.LENGTH_SHORT).show();
         }else{
             //getfromlocalstorage
             id_user = generateId();
+            Toast.makeText(getApplicationContext(), "User existant !", Toast.LENGTH_SHORT).show();
         }
         idUser.setText(id_user);
         waitingMessage(false);
