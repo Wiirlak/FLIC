@@ -17,7 +17,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import androidx.annotation.NonNull;
-import fr.esgi.flic.DatabaseProvider;
+import fr.esgi.flic.provider.DatabaseProvider;
 
 public class HeadPhone extends Service {
 

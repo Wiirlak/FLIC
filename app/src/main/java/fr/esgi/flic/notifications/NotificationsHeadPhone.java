@@ -6,7 +6,7 @@ import android.content.Intent;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import fr.esgi.flic.MainActivity;
+import fr.esgi.flic.activities.MainActivity;
 import fr.esgi.flic.R;
 
 public class NotificationsHeadPhone {

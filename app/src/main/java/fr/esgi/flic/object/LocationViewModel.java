@@ -1,4 +1,4 @@
-package fr.esgi.flic;
+package fr.esgi.flic.object;
 
 import androidx.lifecycle.ViewModel;
 

@@ -42,6 +42,7 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'androidx.room:room-runtime:2.2.3'
     annotationProcessor 'androidx.room:room-compiler:2.2.3'
+    implementation 'com.google.code.gson:gson:2.8.5'
 
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.google.android.gms:play-services-awareness:17.1.0'
