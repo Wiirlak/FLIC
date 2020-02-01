@@ -19,6 +19,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 }
 
 dependencies {
@@ -38,5 +42,15 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'androidx.room:room-runtime:2.2.3'
     annotationProcessor 'androidx.room:room-compiler:2.2.3'
+
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.google.android.gms:play-services-awareness:17.1.0'
+    //noinspection GradleCompatible
+    implementation "com.android.support:support-compat:28.0.0"
+    def multidex_version = "2.0.1"
+    implementation "androidx.multidex:multidex:$multidex_version"
+    implementation 'com.google.firebase:firebase-firestore:21.3.1'
+    implementation 'com.google.android.gms:play-services-maps:9.8.0'
+    implementation 'com.google.android.gms:play-services-location:9.8.0'
 
 }
