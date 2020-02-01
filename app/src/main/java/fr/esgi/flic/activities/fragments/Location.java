@@ -1,4 +1,4 @@
-package fr.esgi.flic;
+package fr.esgi.flic.activities.fragments;
 
 import androidx.lifecycle.ViewModelProviders;
 
@@ -11,6 +11,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import fr.esgi.flic.R;
+import fr.esgi.flic.object.LocationViewModel;
 
 public class Location extends Fragment {
 

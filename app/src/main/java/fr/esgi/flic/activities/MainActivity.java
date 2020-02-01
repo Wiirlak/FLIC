@@ -1,10 +1,11 @@
-package fr.esgi.flic;
+package fr.esgi.flic.activities;
 
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import fr.esgi.flic.R;
 import fr.esgi.flic.services.Database;
 import fr.esgi.flic.services.HeadPhone;
 import fr.esgi.flic.services.Locations;

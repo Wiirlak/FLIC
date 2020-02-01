@@ -1,4 +1,4 @@
-package fr.esgi.flic;
+package fr.esgi.flic.provider;
 
 import android.content.Context;
 import android.util.Log;
@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
+
+import fr.esgi.flic.R;
 
 
 public class DatabaseProvider {

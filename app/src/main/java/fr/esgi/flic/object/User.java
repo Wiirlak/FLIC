@@ -1,4 +1,4 @@
-package fr.esgi.flic;
+package fr.esgi.flic.object;
 import com.google.firebase.database.DatabaseReference;
 
 
