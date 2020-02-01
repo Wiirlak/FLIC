@@ -67,10 +67,13 @@ public class LinkActivity extends AppCompatActivity {
     }
 
     public void applyCopiedLinkOnStart() {
+        if(!clipboard.hasPrimaryClip())
+            return;
+        ClipData exemple = clipboard.getPrimaryClip();
         ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
-        id_partner  = item.getText();
+        id_partner = item.getText();
         if (id_partner != null) {
-            if(id_partner.length() == 9) {
+            if (id_partner.length() == 9) {
                 if (!id_partner.toString().equals(id_user.toString())) {
                     EditText idPartner = findViewById(R.id.companionID);
                     idPartner.setText(id_partner);
@@ -78,7 +81,6 @@ public class LinkActivity extends AppCompatActivity {
                 }
             }
         }
-
     }
 
     public void waitingMessage(boolean v) {
