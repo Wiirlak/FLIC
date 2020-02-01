@@ -19,6 +19,12 @@ public class SPHelper {
         sharedPreferencesEditor.apply();
     }
 
+    public static void saveUserToSharedPreference(Context context,  Object object) {
+        String preferenceFileName = "FLIC_user";
+        String serializedObjectKey = "User";
+        saveObjectToSharedPreference(context, preferenceFileName, serializedObjectKey, object);
+    }
+
     //Usage : getSavedObjectFromPreference(context, "mPreference", "mObjectKey", (Type) SampleClass.class)
     public static <GenericClass> GenericClass getSavedObjectFromPreference(Context context, String preferenceFileName, String preferenceKey, Type classType) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(preferenceFileName, 0);
@@ -27,5 +33,11 @@ public class SPHelper {
             return gson.fromJson(sharedPreferences.getString(preferenceKey, ""), classType);
         }
         return null;
+    }
+
+    public static <GenericClass> GenericClass getSavedUserFromPreference(Context context, Type classType) {
+        String preferenceFileName = "FLIC_user";
+        String preferenceKey = "User";
+        return getSavedObjectFromPreference(context, preferenceFileName, preferenceKey, classType);
     }
 }

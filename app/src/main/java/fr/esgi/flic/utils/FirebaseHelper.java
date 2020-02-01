@@ -1,8 +1,12 @@
 package fr.esgi.flic.utils;
 
+import androidx.annotation.NonNull;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -63,7 +67,24 @@ public class FirebaseHelper {
 
 
     public boolean exist(String id){
-        return false;
+        final boolean[] existing = new boolean[1];
+        DocumentReference docRef = db.collection("cities").document("SF");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        existing[0] = true;
+                    } else {
+                        existing[0] = false;
+                    }
+                } else {
+                    existing[0] = false;
+                }
+            }
+        });
+        return existing[0];
     }
 
 }
