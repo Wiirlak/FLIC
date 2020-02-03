@@ -57,11 +57,14 @@ public class MainActivity extends AppCompatActivity {
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel headphoneChannel = new NotificationChannel(this.getResources().getString(R.string.HEADPHONE_CHANNEL), name, importance);
             NotificationChannel localisationChannel = new NotificationChannel(this.getResources().getString(R.string.LOCALISATION_CHANNEL), name, importance);
+            NotificationChannel stateChannel = new NotificationChannel(this.getResources().getString(R.string.STATE_CHANNEL), name, importance);
             headphoneChannel.setDescription(description);
             localisationChannel.setDescription(description);
+            stateChannel.setDescription(description);
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(headphoneChannel);
             notificationManager.createNotificationChannel(localisationChannel);
+            notificationManager.createNotificationChannel(stateChannel);
 
 
         }

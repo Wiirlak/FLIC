@@ -25,6 +25,9 @@ import androidx.annotation.Nullable;
 import fr.esgi.flic.notifications.NotificationsHeadPhone;
 import fr.esgi.flic.notifications.NotificationsLocalisation;
 import fr.esgi.flic.R;
+import fr.esgi.flic.notifications.NotificationsState;
+import fr.esgi.flic.object.User;
+import fr.esgi.flic.utils.SPHelper;
 
 public class Database extends Service {
     private static final String TAG = "DatabaseService";
@@ -42,7 +45,9 @@ public class Database extends Service {
 
     @Override
     public void onCreate() {
-        String coupled_id = "senyuhG15nVVusKgX9ul";
+        User u = SPHelper.getSavedUserFromPreference(context, User.class);
+        String coupled_id = u.getPartner_id();
+//        String coupled_id = "senyuhG15nVVusKgX9ul";
         final DocumentReference docRef = db.collection("user").document(coupled_id);
         db.collection("notifications")
                 .whereEqualTo("user_id", docRef)
@@ -55,13 +60,6 @@ public class Database extends Service {
                             return;
                         }
 
-                        List<String> cities = new ArrayList<>();
-                        for (QueryDocumentSnapshot doc : value) {
-                            if (doc.get("type") != null) {
-                                cities.add(doc.getString("type"));
-                            }
-                        }
-                        //Log.d(TAG, "Current cites in CA: " + cities);
                         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -84,6 +82,8 @@ public class Database extends Service {
                                                             NotificationsHeadPhone.sendNotification(context,type,document.getDocuments().get(0).get("value").toString());
                                                         }else if(type.equals(context.getResources().getString(R.string.LOCALISATION_TEXT))) {
                                                             NotificationsLocalisation.sendNotification(context,type,document.getDocuments().get(0).get("value").toString());
+                                                        }else if(type.equals(context.getResources().getString(R.string.STATE_TEXT))) {
+                                                            NotificationsState.sendNotification(context,type,document.getDocuments().get(0).get("value").toString());
                                                         }
 
                                                     } else {

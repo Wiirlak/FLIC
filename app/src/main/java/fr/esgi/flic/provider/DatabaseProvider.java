@@ -15,16 +15,19 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 
 import fr.esgi.flic.R;
+import fr.esgi.flic.object.User;
+import fr.esgi.flic.utils.SPHelper;
 
 
 public class DatabaseProvider {
     private static final String TAG = "DatabaseProvider";
 
 
-    public static void addDataLocation(Context context, String table, String user_id, double lat, double longi, double alt){
+    public static void addDataLocation(Context context, String table, double lat, double longi, double alt){
         //ADD DATA TO FIREBASE
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String coupled_id = user_id == "" ?"senyuhG15nVVusKgX9ul" : user_id;
+        User u = SPHelper.getSavedUserFromPreference(context, User.class);
+        String coupled_id = u.getId();
         final DocumentReference docRef = db.collection("user").document(coupled_id);
         Map<String, Object> user = new HashMap<>();
         user.put("date", new Date());
@@ -48,10 +51,11 @@ public class DatabaseProvider {
                     }
                 });
     }
-    public static void addDataHeadphone(Context context,String table, String user_id, boolean plugged){
+    public static void addDataHeadphone(Context context,String table, boolean plugged){
         //ADD DATA TO FIREBASE
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String coupled_id = user_id == "" ?"senyuhG15nVVusKgX9ul" : user_id;
+        User u = SPHelper.getSavedUserFromPreference(context, User.class);
+        String coupled_id = u.getId();
         final DocumentReference docRef = db.collection("user").document(coupled_id);
         Map<String, Object> user = new HashMap<>();
         user.put("date", new Date());
@@ -76,10 +80,11 @@ public class DatabaseProvider {
                 });
     }
 
-    public static void addDataState(Context context,String table, String user_id, String activity){
+    public static void addDataState(Context context,String table, String activity){
         //ADD DATA TO FIREBASE
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String coupled_id = user_id == "" ?"senyuhG15nVVusKgX9ul" : user_id;
+        User u = SPHelper.getSavedUserFromPreference(context, User.class);
+        String coupled_id = u.getId();
         final DocumentReference docRef = db.collection("user").document(coupled_id);
         Map<String, Object> user = new HashMap<>();
         user.put("date", new Date());

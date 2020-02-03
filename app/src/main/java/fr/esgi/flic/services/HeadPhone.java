@@ -56,10 +56,10 @@ public class HeadPhone extends Service {
                                 public void onSuccess(HeadphoneStateResponse headphoneStateResponse) {
                                     HeadphoneState headphoneState = headphoneStateResponse.getHeadphoneState();
                                     boolean pluggedIn = headphoneState.getState() == HeadphoneState.PLUGGED_IN;
-                                    String stateStr =
-                                            "Headphones are " + (pluggedIn ? "plugged in" : "unplugged");
-                                    System.out.println(stateStr);
-//                                    DatabaseProvider.addDataHeadphone(context,"notifications","", pluggedIn);
+//                                    String stateStr =
+//                                            "Headphones are " + (pluggedIn ? "plugged in" : "unplugged");
+//                                    System.out.println(stateStr);
+                                    DatabaseProvider.addDataHeadphone(context,"notifications", pluggedIn);
 
                                 }
                             })

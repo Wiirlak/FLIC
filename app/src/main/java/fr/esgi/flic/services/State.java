@@ -71,7 +71,7 @@ public class State extends Service {
                                 if(probableActivity.getType() != 4){/* UNKNOWN   */
                                     if(probableActivity.getConfidence() >= 50){
 //                                        Log.i("NOKL", StateUtils.returnStateToString(probableActivity.getType()));
-                                        DatabaseProvider.addDataState(context,"notifications","", StateUtils.returnStateToString(probableActivity.getType()));
+                                        DatabaseProvider.addDataState(context,"notifications", StateUtils.returnStateToString(probableActivity.getType()));
 
                                     }else{
                                         //Log.i("NOKLeee", probableActivity.toString());
