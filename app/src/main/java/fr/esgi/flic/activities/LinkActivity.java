@@ -3,6 +3,7 @@ package fr.esgi.flic.activities;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -12,9 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.Random;
 
 import fr.esgi.flic.R;
+import fr.esgi.flic.notifications.DbListener;
 import fr.esgi.flic.object.User;
 import fr.esgi.flic.utils.FirebaseHelper;
 import fr.esgi.flic.utils.SPHelper;
@@ -22,9 +25,8 @@ import fr.esgi.flic.utils.SPHelper;
 public class LinkActivity extends AppCompatActivity {
     FirebaseHelper db;
     ClipboardManager clipboard;
-    CharSequence id_user;
-    CharSequence id_partner; // can be null
     User user;
+    DbListener linked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,25 +35,26 @@ public class LinkActivity extends AppCompatActivity {
         this.setContentView(R.layout.activity_link);
         clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         db = new FirebaseHelper();
+        linked = new DbListener(db);
+
+        user = SPHelper.getSavedUserFromPreference(getApplicationContext(), User.class);
+        if(user == null) {
+            user = new User();
+            user.setId(createId());
+            SPHelper.saveUserToSharedPreference(getApplicationContext(), user);
+            db.post("user", user.getId(), user);
+        }else{
+            TextView partner = findViewById(R.id.companionID);
+            partner.setText(user.getPartner_id());
+        }
+        if(linked.isLinked("user", user.getId(), user.getPartner_id())){
+            Intent main = new Intent(this, MainActivity.class);
+            startActivity(main);
+        }
 
         TextView idUser = findViewById(R.id.personnalID);
-        //id_user = idUser.getText();
-        //Usage : getSavedObjectFromPreference(context, "mPreference", "mObjectKey", (Type) SampleClass.class)
-        user = SPHelper.getSavedObjectFromPreference(getApplicationContext(), "mPreference", "mObjectKey", User.class);
-        if(user == null) {
-            id_user = generateId();
-
-            User nu = new User(id_user.toString());
-            SPHelper.saveObjectToSharedPreference(getApplicationContext(), "mPreference", "mObjectKey", user);
-            db.post("user", nu.getId(), nu);
-            Toast.makeText(getApplicationContext(), "User créé !", Toast.LENGTH_SHORT).show();
-        }else{
-            //getfromlocalstorage
-            id_user = generateId();
-            Toast.makeText(getApplicationContext(), "User existant !", Toast.LENGTH_SHORT).show();
-        }
-        idUser.setText(id_user);
-        waitingMessage(false);
+        idUser.setText(user.getId());
+        waitingMessage(user.getPartner_id() != null);
     }
 
     @Override
@@ -61,33 +64,42 @@ public class LinkActivity extends AppCompatActivity {
     }
 
     public void onClickCopyLink(View view) {
-        ClipData clip = ClipData.newPlainText("FLIC_my_id", id_user);
+        ClipData clip = ClipData.newPlainText("FLIC_my_id", user.getId());
         //ClipData clip = ClipData.newPlainText("FLIC_my_id", "a899c435b"); // Test value
         clipboard.setPrimaryClip(clip);
         Toast.makeText(getApplicationContext(), "Ton id a été mis dans le presse-papier !", Toast.LENGTH_SHORT).show();
     }
 
+    public void onPartnerIdEdit(View view){
+        waitingMessage(false);
+    }
+
     public void setPartner(View view) {
         TextView partner = findViewById(R.id.companionID);
-        id_partner  = partner.getText();
-        db.post("user", id_user.toString(), "partner_id", "user/" + id_partner.toString());
+        user.setPartner_id(partner.getText().toString());
+        db.post("user", user.getId(), user);
+        SPHelper.saveUserToSharedPreference(getApplicationContext(), user);
 
         Toast.makeText(getApplicationContext(), "id envoyé", Toast.LENGTH_SHORT).show();
         waitingMessage(true);
+
+
+        //REMOVE THAT IN FINAL
+        Intent main = new Intent(this, MainActivity.class);
+        startActivity(main);
     }
 
     public void applyCopiedLinkOnStart() {
         if(!clipboard.hasPrimaryClip())
             return;
-        ClipData exemple = clipboard.getPrimaryClip();
         ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
-        id_partner = item.getText();
-        if (id_partner != null) {
-            if (id_partner.length() == 9) {
-                if (!id_partner.toString().equals(id_user.toString())) {
+        user.setPartner_id(item.getText().toString());
+        if (user.getPartner_id() != null) {
+            if (user.getPartner_id().length() == 9) {
+                if (!user.getPartner_id().equals(user.getId())) {
                     EditText idPartner = findViewById(R.id.companionID);
-                    idPartner.setText(id_partner);
-                    idPartner.setSelection(id_partner.length());
+                    idPartner.setText(user.getPartner_id());
+                    idPartner.setSelection(user.getPartner_id().length());
                 }
             }
         }
@@ -99,11 +111,14 @@ public class LinkActivity extends AppCompatActivity {
         if(v){
             waitMessage.setVisibility(TextView.VISIBLE);
             partner.setFocusable(false);
-            partner.setBackgroundColor(Color.argb(200,122,122,122));
+            partner.setClickable(true);
+            partner.setBackgroundColor(Color.argb(50,10,10,10));
         }else{
             waitMessage.setVisibility(TextView.INVISIBLE);
+            partner.setFocusable(true);
+            partner.setClickable(false);
+            partner.setBackgroundColor(Color.argb(255,255,255,255));
         }
-
     }
 
     public String generateId(){
@@ -116,11 +131,13 @@ public class LinkActivity extends AppCompatActivity {
         return sb.toString();
     }
 
-    public void createId(){
+    public String createId(){
         String id;
         do {
             id = generateId();
-        }while(!db.exist(id));
+//        }while(!db.exist("user", id));
+        }while(false);
+        return id;
     }
 
 

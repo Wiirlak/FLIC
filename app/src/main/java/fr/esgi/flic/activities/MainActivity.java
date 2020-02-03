@@ -1,6 +1,14 @@
 package fr.esgi.flic.activities;
 
 
+import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -10,14 +18,6 @@ import fr.esgi.flic.services.Database;
 import fr.esgi.flic.services.HeadPhone;
 import fr.esgi.flic.services.Locations;
 import fr.esgi.flic.services.State;
-
-import android.Manifest;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.os.Bundle;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
+        super.onStart();
         if (ContextCompat.checkSelfPermission(
                 MainActivity.this,
                 Manifest.permission.ACCESS_FINE_LOCATION) !=
@@ -45,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
             );
             return;
         }
-        super.onStart();
     }
 
     private void createNotificationChannel() {
@@ -69,8 +69,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void callAllIntent(){
-        Intent connection = new Intent(this, LinkActivity.class);
-        startActivity(connection);
         Intent localisation = new Intent(this, Locations.class);
         startService(localisation);
         Intent headphone = new Intent(this, HeadPhone.class);
