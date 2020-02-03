@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.fragments.Location">
+    tools:context=".activities.fragments.Headphone">
 
     <TextView
-        android:id="@+id/latest_localisations_notifications"
+        android:id="@+id/latest_headphone_state_notifications"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center|center_horizontal|center_vertical"
-        android:text="Dernières localisations" />
+        android:text="Activité des écouteurs" />
 
-</FrameLayout>
+</LinearLayout>

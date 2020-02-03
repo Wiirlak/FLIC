@@ -34,6 +34,8 @@ public class Location extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
         // TODO: Use the ViewModel
+
+
     }
 
 }

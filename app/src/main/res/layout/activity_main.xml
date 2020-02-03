@@ -21,6 +21,13 @@
             android:scaleType="centerCrop"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
+        <Button
+            android:id="@+id/button"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:text="+" />
+
     </FrameLayout>
 
     <ImageView
@@ -56,55 +63,57 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="189dp">
+            android:layout_height="351dp">
 
             <FrameLayout
+                android:id="@+id/localisation_frame"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="24dp"
-                android:layout_weight="2"
+                android:layout_weight="0.3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView">
 
                 <fragment
-                    android:id="@+id/fragment"
+                    android:id="@+id/localisation_fragment"
                     android:name="fr.esgi.flic.activities.fragments.Location"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="108dp" />
 
             </FrameLayout>
 
             <FrameLayout
+                android:id="@+id/headphone_frame"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="24dp"
-                android:layout_weight="2"
+                android:layout_weight="0.3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView">
 
                 <fragment
-                    android:id="@+id/fragment2"
-                    android:name="fr.esgi.flic.activities.fragments.Location"
+                    android:id="@+id/headphone_fragment"
+                    android:name="fr.esgi.flic.activities.fragments.Headphone"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
             </FrameLayout>
 
             <FrameLayout
+                android:id="@+id/state_frame"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="24dp"
-                android:layout_weight="2"
+                android:layout_weight="0.3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView">
 
-                <Button
-                    android:id="@+id/button"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center"
-                    android:text="+" />
+                <fragment
+                    android:id="@+id/state_fragment"
+                    android:name="fr.esgi.flic.activities.fragments.State"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
             </FrameLayout>
 
         </TableRow>
