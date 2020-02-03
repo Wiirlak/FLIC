@@ -75,4 +75,32 @@ public class DatabaseProvider {
                     }
                 });
     }
+
+    public static void addDataState(Context context,String table, String user_id, String activity){
+        //ADD DATA TO FIREBASE
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String coupled_id = user_id == "" ?"senyuhG15nVVusKgX9ul" : user_id;
+        final DocumentReference docRef = db.collection("user").document(coupled_id);
+        Map<String, Object> user = new HashMap<>();
+        user.put("date", new Date());
+        user.put("type", context.getResources().getString(R.string.STATE_TEXT));
+        user.put("user_id", docRef); // user_id
+        user.put("value", activity);
+
+// Add a new document with a generated ID
+        db.collection(table)
+                .add(user)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+                    }
+                });
+    }
 }

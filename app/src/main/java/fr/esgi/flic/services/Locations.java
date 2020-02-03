@@ -53,8 +53,8 @@ public class Locations extends Service {
                                 @Override
                                 public void onSuccess(LocationResponse locationResponse) {
                                     android.location.Location loc = locationResponse.getLocation();
-//                                    System.out.println("Alt :"+loc.getAltitude() +" Lat : "+loc.getLatitude()+ " Long :"+ loc.getLongitude());
-                                    DatabaseProvider.addDataLocation(context,"notifications","", loc.getLatitude(),loc.getLongitude(),loc.getAltitude());
+                                    System.out.println("Alt :"+loc.getAltitude() +" Lat : "+loc.getLatitude()+ " Long :"+ loc.getLongitude());
+                                    //DatabaseProvider.addDataLocation(context,"notifications","", loc.getLatitude(),loc.getLongitude(),loc.getAltitude());
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
