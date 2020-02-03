@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
+        super.onStart();
         if (ContextCompat.checkSelfPermission(
                 MainActivity.this,
                 Manifest.permission.ACCESS_FINE_LOCATION) !=
@@ -45,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
             );
             return;
         }
-        super.onStart();
     }
 
     private void createNotificationChannel() {

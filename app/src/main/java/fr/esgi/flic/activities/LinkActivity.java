@@ -60,6 +60,10 @@ public class LinkActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Ton id a été mis dans le presse-papier !", Toast.LENGTH_SHORT).show();
     }
 
+    public void onPartnerIdEdit(View view){
+        waitingMessage(false);
+    }
+
     public void setPartner(View view) {
         TextView partner = findViewById(R.id.companionID);
         user.setPartner_id(partner.getText().toString());
@@ -92,9 +96,13 @@ public class LinkActivity extends AppCompatActivity {
         if(v){
             waitMessage.setVisibility(TextView.VISIBLE);
             partner.setFocusable(false);
-            partner.setBackgroundColor(Color.argb(200,122,122,122));
+            partner.setClickable(true);
+            partner.setBackgroundColor(Color.argb(50,10,10,10));
         }else{
             waitMessage.setVisibility(TextView.INVISIBLE);
+            partner.setFocusable(true);
+            partner.setClickable(false);
+            partner.setBackgroundColor(Color.argb(255,255,255,255));
         }
     }
 
@@ -112,7 +120,8 @@ public class LinkActivity extends AppCompatActivity {
         String id;
         do {
             id = generateId();
-        }while(!db.exist("user", id));
+//        }while(!db.exist("user", id));
+        }while(false);
         return id;
     }
 
