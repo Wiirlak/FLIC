@@ -3,6 +3,7 @@ package fr.esgi.flic.activities;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -12,9 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.Random;
 
 import fr.esgi.flic.R;
+import fr.esgi.flic.notifications.DbListener;
 import fr.esgi.flic.object.User;
 import fr.esgi.flic.utils.FirebaseHelper;
 import fr.esgi.flic.utils.SPHelper;
@@ -23,6 +26,7 @@ public class LinkActivity extends AppCompatActivity {
     FirebaseHelper db;
     ClipboardManager clipboard;
     User user;
+    DbListener linked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +35,8 @@ public class LinkActivity extends AppCompatActivity {
         this.setContentView(R.layout.activity_link);
         clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         db = new FirebaseHelper();
+        linked = new DbListener(db);
 
-        TextView idUser = findViewById(R.id.personnalID);
         user = SPHelper.getSavedUserFromPreference(getApplicationContext(), User.class);
         if(user == null) {
             user = new User();
@@ -43,6 +47,12 @@ public class LinkActivity extends AppCompatActivity {
             TextView partner = findViewById(R.id.companionID);
             partner.setText(user.getPartner_id());
         }
+        if(linked.isLinked("user", user.getId(), user.getPartner_id())){
+            Intent main = new Intent(this, MainActivity.class);
+            startActivity(main);
+        }
+
+        TextView idUser = findViewById(R.id.personnalID);
         idUser.setText(user.getId());
         waitingMessage(user.getPartner_id() != null);
     }
@@ -72,6 +82,11 @@ public class LinkActivity extends AppCompatActivity {
 
         Toast.makeText(getApplicationContext(), "id envoyé", Toast.LENGTH_SHORT).show();
         waitingMessage(true);
+
+
+        //REMOVE THAT IN FINAL
+        Intent main = new Intent(this, MainActivity.class);
+        startActivity(main);
     }
 
     public void applyCopiedLinkOnStart() {

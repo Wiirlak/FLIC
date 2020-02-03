@@ -1,6 +1,7 @@
 package fr.esgi.flic.utils;
 
 import androidx.annotation.NonNull;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -16,11 +17,23 @@ import fr.esgi.flic.object.User;
 
 public class FirebaseHelper {
     private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    public FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final String TAG = "AppWidgetProvider";
 
     public Object get(String collection, String field, String value) {
         return db.collection(collection).whereEqualTo(field, value).get();
+    }
+
+    public Object get(String collection, String id){
+        Task result;
+        try {
+            result = db.collection(collection).document(id).get();
+            Tasks.await(result);
+            return result.getResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public Object post(String collection, String id, User data) {
