@@ -10,6 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center|center_horizontal|center_vertical"
-        android:text="Activité des écouteurs" />
+        android:text="latest_headphone_state_notifications" />
 
 </LinearLayout>

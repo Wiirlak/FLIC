@@ -1,14 +1,20 @@
 package fr.esgi.flic.utils;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import fr.esgi.flic.object.Notifications;
 import fr.esgi.flic.object.User;
+import android.util.Log;
+
 
 public class FirebaseHelper {
     private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
@@ -59,6 +65,22 @@ public class FirebaseHelper {
 
     public Object delete(String collection, String id, Map<String, Object> data) {
         return db.collection(collection).document(id).delete();
+    }
+
+    public ArrayList<Notifications> getNotifications(String type, int limit) {
+        Log.d("Android FirebaseHelper", "getting notifications...");
+        Task result;
+        try {
+            if(limit > 0)
+                result = db.collection("notifications").whereEqualTo("type", type).limit(limit).get();
+            else
+                result = db.collection("notifications").whereEqualTo("type", type).get();
+            Tasks.await(result);
+            return (ArrayList<Notifications>) result.getResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
