@@ -24,8 +24,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import fr.esgi.flic.activities.MainActivity;
 import fr.esgi.flic.R;
+import fr.esgi.flic.activities.MainActivity;
 
 public class WidgetProvider extends AppWidgetProvider {
 

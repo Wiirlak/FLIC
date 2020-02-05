@@ -22,7 +22,12 @@ public class FirebaseHelper {
     private static final String TAG = "AppWidgetProvider";
 
     public Object get(String collection, String field, String value) {
-        return db.collection(collection).whereEqualTo(field, value).get();
+        try {
+            return Tasks.await(db.collection(collection).whereEqualTo(field, value).get());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public Object post(String collection, String id, User data) {
