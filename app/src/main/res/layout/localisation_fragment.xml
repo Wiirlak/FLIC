@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.fragments.Location">
+    tools:context=".activities.fragments.Localisation">
 
     <TextView
         android:id="@+id/latest_localisations_notifications"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center|center_horizontal|center_vertical"
-        android:text="Dernières localisations" />
+        android:text="Dernières localisations : \n" />
 
 </FrameLayout>
