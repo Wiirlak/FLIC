@@ -9,7 +9,8 @@
         android:id="@+id/latest_localisations_notifications"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:autoLink="web"
         android:gravity="center|center_horizontal|center_vertical"
-        android:text="Appuyez ici pour obtenir les dernières localisation" />
+        android:text="Appuyez ici pour obtenir les dernières localisations" />
 
 </FrameLayout>
