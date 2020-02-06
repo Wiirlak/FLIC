@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,7 +66,7 @@ public class Localisation extends Fragment {
                                 @Override
                                 public void run() {
                                     for (int i = 0; i < 3; i++) {
-                                        tv.setText(tv.getText() + "\n" + queryDocumentSnapshots.getDocuments().get(i).get("value").toString());
+                                        tv.setText(tv.getText() + "\n" + queryDocumentSnapshots.getDocuments().get(i).get("value").toString() + DateFormat.format(" le dd/MM/yyyy à hh:mm:ss", queryDocumentSnapshots.getDocuments().get(0).getDate("date")));
                                     }
 
                                 }

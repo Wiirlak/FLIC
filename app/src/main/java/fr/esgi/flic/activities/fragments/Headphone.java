@@ -3,6 +3,7 @@ package fr.esgi.flic.activities.fragments;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,9 +26,13 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.Locale;
 
 import fr.esgi.flic.R;
+import fr.esgi.flic.utils.Tools;
 
 public class Headphone extends Fragment {
 
@@ -60,12 +65,13 @@ public class Headphone extends Fragment {
 
                         if(!queryDocumentSnapshots.isEmpty()) {
                             getActivity().runOnUiThread(new Runnable() {
+
+
                                 @Override
                                 public void run() {
                                     for (int i = 0; i < 3; i++) {
-                                        tv.setText(tv.getText() + "\n" + queryDocumentSnapshots.getDocuments().get(i).get("value").toString());
+                                        tv.setText(tv.getText() + "\n" + Tools.headphoneSwitch(queryDocumentSnapshots.getDocuments().get(i).get("value").toString()) + DateFormat.format(" le dd/MM/yyyy à hh:mm:ss", queryDocumentSnapshots.getDocuments().get(0).getDate("date")));
                                     }
-
                                 }
                             });
                         }

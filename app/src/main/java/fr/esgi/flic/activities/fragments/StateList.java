@@ -2,6 +2,7 @@ package fr.esgi.flic.activities.fragments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import fr.esgi.flic.R;
+import fr.esgi.flic.utils.Tools;
 
 public class StateList extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -55,7 +57,7 @@ public class StateList extends Fragment {
                                 @Override
                                 public void run() {
                                     for (int i = 0; i < queryDocumentSnapshots.getDocuments().size(); i++) {
-                                        list.setText(list.getText() + "\n" + queryDocumentSnapshots.getDocuments().get(i).get("value").toString());
+                                        list.setText(list.getText() + "\n" + Tools.stateSwitch(queryDocumentSnapshots.getDocuments().get(i).get("value").toString()) + DateFormat.format(" le dd/MM/yyyy à hh:mm:ss", queryDocumentSnapshots.getDocuments().get(0).getDate("date")));
                                     }
 
                                 }

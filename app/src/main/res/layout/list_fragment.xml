@@ -12,8 +12,10 @@
             android:id="@+id/list_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text=""
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textStyle="bold" />
 
         <ScrollView
             android:layout_width="match_parent"
