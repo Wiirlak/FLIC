@@ -14,8 +14,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.MapView;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -23,8 +25,11 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Map;
+
 import fr.esgi.flic.R;
 import fr.esgi.flic.object.LocationViewModel;
+import fr.esgi.flic.utils.Tools;
 
 public class Localisation extends Fragment {
 
@@ -66,9 +71,9 @@ public class Localisation extends Fragment {
                                 @Override
                                 public void run() {
                                     for (int i = 0; i < 3; i++) {
-                                        tv.setText(tv.getText() + "\n" + queryDocumentSnapshots.getDocuments().get(i).get("value").toString() + DateFormat.format(" le dd/MM/yyyy à hh:mm:ss", queryDocumentSnapshots.getDocuments().get(0).getDate("date")));
+                                        //tv.setText(tv.getText() + "\n" + Tools.getLocalisationURL(queryDocumentSnapshots.getDocuments().get(i).get("value").toString()) + DateFormat.format(" le dd/MM/yyyy à hh:mm:ss", queryDocumentSnapshots.getDocuments().get(0).getDate("date")));
                                     }
-
+                                    Log.d(TAG, "MAP = " + Tools.getLocalisationURL(queryDocumentSnapshots.getDocuments().get(0).get("value").toString()));
                                 }
                             });
                         }

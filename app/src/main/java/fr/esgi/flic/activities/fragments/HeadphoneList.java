@@ -39,7 +39,7 @@ public class HeadphoneList extends Fragment {
         TextView title = (TextView) view.findViewById(R.id.list_title);
         title.setText("Liste des dernières utilisations des écouteurs : ");
 
-        TextView list = (TextView) view.findViewById(R.id.headphone_notification_list);
+        TextView list = (TextView) view.findViewById(R.id.notification_list);
 
         db.collection("notifications") // TODO ajouter condition user = id de l'utilisateur couplé
                 .whereEqualTo("type", "headphone")

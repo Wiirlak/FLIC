@@ -29,13 +29,10 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/headphone_notification_list"
+                    android:id="@+id/notification_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:clickable="false"
-                    android:ems="10"
-                    android:gravity="start|top"
+                    android:autoLink="web"
                     android:inputType="textMultiLine"
                     android:text=""
                     android:textAlignment="center" />

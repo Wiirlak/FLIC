@@ -22,7 +22,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import fr.esgi.flic.R;
 import fr.esgi.flic.utils.Tools;
 
-public class State extends Fragment {
+public class StateFragment extends Fragment {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     final private String TAG = "FragmentState";
