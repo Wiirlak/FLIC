@@ -23,7 +23,7 @@ import fr.esgi.flic.R;
 public class State extends Fragment {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    final private String TAG = "FragmentHeadphone";
+    final private String TAG = "FragmentState";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class State extends Fragment {
 
         TextView tv = (TextView) getView().findViewById(R.id.latest_states_notifications);
 
-        db.collection("notifications")
+        db.collection("notifications")// TODO ajouter condition user = id de l'utilisateur couplé
                 .whereEqualTo("type", "state")
                 .orderBy("date", Query.Direction.DESCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -53,7 +53,6 @@ public class State extends Fragment {
                                 @Override
                                 public void run() {
                                     for (int i = 0; i < 3; i++) {
-                                        Log.d("FOR DEBUG", queryDocumentSnapshots.getDocuments().get(i).get("value").toString());
                                         tv.setText(tv.getText() + "\n" + queryDocumentSnapshots.getDocuments().get(i).get("value").toString());
                                     }
 

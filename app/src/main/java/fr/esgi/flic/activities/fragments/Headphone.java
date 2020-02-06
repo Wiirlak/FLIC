@@ -46,7 +46,7 @@ public class Headphone extends Fragment {
 
         TextView tv = (TextView) getView().findViewById(R.id.latest_headphone_state_notifications);
 
-        db.collection("notifications")
+        db.collection("notifications") // TODO ajouter condition user = id de l'utilisateur couplé
                 .whereEqualTo("type", "headphone")
                 .orderBy("date", Query.Direction.DESCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -63,7 +63,6 @@ public class Headphone extends Fragment {
                                 @Override
                                 public void run() {
                                     for (int i = 0; i < 3; i++) {
-                                        Log.d("FOR DEBUG", queryDocumentSnapshots.getDocuments().get(i).get("value").toString());
                                         tv.setText(tv.getText() + "\n" + queryDocumentSnapshots.getDocuments().get(i).get("value").toString());
                                     }
 

@@ -8,6 +8,7 @@
     tools:context=".activities.MainActivity">
 
     <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,6 +47,7 @@
         app:srcCompat="@android:drawable/ic_menu_preferences" />
 
     <TableLayout
+        android:id="@+id/tableLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
@@ -54,9 +56,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView">
 
+
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <FrameLayout
                 android:id="@+id/headphone_frame"
@@ -64,8 +67,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:layout_weight="0.3"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView">
+                android:onClick="showHeadphoneNotifList"
+                app:layout_constraintStart_toStartOf="parent">
 
                 <fragment
                     android:id="@+id/headphone_fragment"
@@ -81,9 +84,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:layout_weight="0.3"
+                android:onClick="showLocalisationNotifList"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView">
+                app:layout_constraintTop_toBottomOf="@+id/list_title">
 
                 <fragment
                     android:id="@+id/localisation_fragment"
@@ -92,6 +96,7 @@
                     android:layout_height="match_parent" />
 
             </FrameLayout>
+
         </TableRow>
 
         <TableRow
@@ -104,8 +109,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_weight="1"
+                android:onClick="showStateNotifList"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView">
+                app:layout_constraintTop_toBottomOf="@+id/list_title">
 
                 <fragment
                     android:id="@+id/state_fragment"
@@ -117,5 +123,16 @@
         </TableRow>
 
     </TableLayout>
+
+    <FrameLayout
+        android:id="@+id/placeholder_frame"
+        android:layout_width="match_parent"
+        android:layout_height="340dp"
+        app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout"
+        tools:layout_editor_absoluteX="411dp">
+
+    </FrameLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

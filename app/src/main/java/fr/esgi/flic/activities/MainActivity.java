@@ -4,8 +4,12 @@ package fr.esgi.flic.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import fr.esgi.flic.R;
+import fr.esgi.flic.activities.fragments.HeadphoneList;
+import fr.esgi.flic.activities.fragments.LocalisationList;
+import fr.esgi.flic.activities.fragments.StateList;
 import fr.esgi.flic.services.Database;
 import fr.esgi.flic.services.HeadPhone;
 import fr.esgi.flic.services.Locations;
@@ -18,9 +22,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 
 
 public class MainActivity extends AppCompatActivity {
+    final static private String TAG = "AndroidMainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +88,32 @@ public class MainActivity extends AppCompatActivity {
         startService(state);
         Intent database = new Intent(this, Database.class);
         startService(database);
+    }
+
+    public void showHeadphoneNotifList(View view) {
+        if(findViewById(R.id.placeholder_frame) != null) {
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.placeholder_frame, new HeadphoneList()).commit();
+        }
+    }
+
+    public void showLocalisationNotifList(View view) {
+        if(findViewById(R.id.placeholder_frame) != null) {
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.placeholder_frame, new LocalisationList()).commit();
+        }
+    }
+
+    public void showStateNotifList(View view) {
+        if(findViewById(R.id.placeholder_frame) != null) {
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.placeholder_frame, new StateList()).commit();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        findViewById(R.id.big_list_layout).setVisibility(View.INVISIBLE);
     }
 
 }
