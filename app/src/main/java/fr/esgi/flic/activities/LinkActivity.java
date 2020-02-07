@@ -12,21 +12,27 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.Random;
 
 import fr.esgi.flic.R;
-import fr.esgi.flic.notifications.DbListener;
 import fr.esgi.flic.object.User;
 import fr.esgi.flic.utils.FirebaseHelper;
 import fr.esgi.flic.utils.SPHelper;
 
 public class LinkActivity extends AppCompatActivity {
-    FirebaseHelper db;
+    FirebaseFirestore dbf = FirebaseFirestore.getInstance();
+    FirebaseHelper db = new FirebaseHelper();
     ClipboardManager clipboard;
     User user;
-    DbListener linked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +41,6 @@ public class LinkActivity extends AppCompatActivity {
         this.setContentView(R.layout.activity_link);
         clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         db = new FirebaseHelper();
-        linked = new DbListener(db);
 
         user = SPHelper.getSavedUserFromPreference(getApplicationContext(), User.class);
         if(user == null) {
@@ -46,10 +51,7 @@ public class LinkActivity extends AppCompatActivity {
         }else{
             TextView partner = findViewById(R.id.companionID);
             partner.setText(user.getPartner_id());
-        }
-        if(linked.isLinked("user", user.getId(), user.getPartner_id())){
-            Intent main = new Intent(this, MainActivity.class);
-            startActivity(main);
+            listenPartner();
         }
 
         TextView idUser = findViewById(R.id.personnalID);
@@ -65,7 +67,6 @@ public class LinkActivity extends AppCompatActivity {
 
     public void onClickCopyLink(View view) {
         ClipData clip = ClipData.newPlainText("FLIC_my_id", user.getId());
-        //ClipData clip = ClipData.newPlainText("FLIC_my_id", "a899c435b"); // Test value
         clipboard.setPrimaryClip(clip);
         Toast.makeText(getApplicationContext(), "Ton id a été mis dans le presse-papier !", Toast.LENGTH_SHORT).show();
     }
@@ -75,18 +76,62 @@ public class LinkActivity extends AppCompatActivity {
     }
 
     public void setPartner(View view) {
+        setPartner();
+    }
+    public void setPartner() {
         TextView partner = findViewById(R.id.companionID);
         user.setPartner_id(partner.getText().toString());
         db.post("user", user.getId(), user);
         SPHelper.saveUserToSharedPreference(getApplicationContext(), user);
 
-        Toast.makeText(getApplicationContext(), "id envoyé", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), "id envoyé", Toast.LENGTH_SHORT).show();
         waitingMessage(true);
+        listenPartner();
 
+    }
 
-        //REMOVE THAT IN FINAL
+    public void listenPartner() {
+        final DocumentReference docRef = dbf.collection("user").document(user.partner_id);
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (snapshot != null && snapshot.exists()) {
+                    checkLink();
+                }
+            }
+        });
+    }
+
+    public void checkLink(){
+        dbf.collection("user")
+                .document(user.partner_id)
+                .get()
+                .addOnCompleteListener((task) -> {
+                    if (task.isSuccessful()){
+                        DocumentSnapshot document = task.getResult();
+                        if(document != null)
+                            if(document.get("partner_id").equals(user.getId()))
+                                gotoMain();
+                    }
+                });
+    }
+
+    public void gotoMain(){
         Intent main = new Intent(this, MainActivity.class);
         startActivity(main);
+    }
+
+    public void waitingMessage(boolean v) {
+        TextView partner = findViewById(R.id.companionID);
+        TextView waitMessage = findViewById(R.id.waitText);
+        if(v){
+            waitMessage.setVisibility(TextView.VISIBLE);
+            partner.setBackgroundColor(Color.argb(50,10,10,10));
+        }else{
+            waitMessage.setVisibility(TextView.INVISIBLE);
+            partner.setBackgroundColor(Color.argb(255,255,255,255));
+        }
     }
 
     public void applyCopiedLinkOnStart() {
@@ -103,22 +148,7 @@ public class LinkActivity extends AppCompatActivity {
                 }
             }
         }
-    }
-
-    public void waitingMessage(boolean v) {
-        TextView partner = findViewById(R.id.companionID);
-        TextView waitMessage = findViewById(R.id.waitText);
-        if(v){
-            waitMessage.setVisibility(TextView.VISIBLE);
-            partner.setFocusable(false);
-            partner.setClickable(true);
-            partner.setBackgroundColor(Color.argb(50,10,10,10));
-        }else{
-            waitMessage.setVisibility(TextView.INVISIBLE);
-            partner.setFocusable(true);
-            partner.setClickable(false);
-            partner.setBackgroundColor(Color.argb(255,255,255,255));
-        }
+        setPartner();
     }
 
     public String generateId(){
