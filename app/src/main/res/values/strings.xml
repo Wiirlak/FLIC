@@ -23,7 +23,11 @@
     <string name="HEADPHONE_TEXT">headphone</string>
     <string name="HEADPHONE_CHANNEL">81</string>
 
-    <string name="LOCALISATION_NOTIF">82</string>
+    <string name="STATE_NOTIF">82</string>
+    <string name="STATE_TEXT">state</string>
+    <string name="STATE_CHANNEL">82</string>
+
+    <string name="LOCALISATION_NOTIF">83</string>
     <string name="LOCALISATION_TEXT">localisation</string>
-    <string name="LOCALISATION_CHANNEL">82</string>
+    <string name="LOCALISATION_CHANNEL">83</string>
 </resources>
