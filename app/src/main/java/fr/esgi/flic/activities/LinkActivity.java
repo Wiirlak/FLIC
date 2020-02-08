@@ -91,16 +91,14 @@ public class LinkActivity extends AppCompatActivity {
     }
 
     public void listenPartner() {
-        if(user.partner_id == null)
+        if(user.getPartner_id() == null || user.getPartner_id().equals("")) {
+            System.out.println("oooooo");
             return;
+        }
         final DocumentReference docRef = dbf.collection("user").document(user.partner_id);
-        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot snapshot,
-                                @Nullable FirebaseFirestoreException e) {
-                if (snapshot != null && snapshot.exists()) {
-                    checkLink();
-                }
+        docRef.addSnapshotListener((snapshot, e) -> {
+            if (snapshot != null && snapshot.exists()) {
+                checkLink();
             }
         });
     }
@@ -113,7 +111,7 @@ public class LinkActivity extends AppCompatActivity {
                     if (task.isSuccessful()){
                         DocumentSnapshot document = task.getResult();
                         if(document != null)
-                            if(document.get("partner_id") != null)
+                            if(document.get("partner_id") != null && document.get("partner_id").equals(""))
                                 if(!document.get("partner_id").equals(user.getId())) {
                                     user.setPartner_id(document.get("partner_id").toString());
                                     SPHelper.saveUserToSharedPreference(getApplicationContext(), user);
@@ -160,14 +158,14 @@ public class LinkActivity extends AppCompatActivity {
         if(!clipboard.hasPrimaryClip())
             return;
         ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
+        if(item.getText().toString().length() != 9)
+            return;
         user.setPartner_id(item.getText().toString());
         if (user.getPartner_id() != null) {
-            if (user.getPartner_id().length() == 9) {
-                if (!user.getPartner_id().equals(user.getId())) {
-                    EditText idPartner = findViewById(R.id.companionID);
-                    idPartner.setText(user.getPartner_id());
-                    idPartner.setSelection(user.getPartner_id().length());
-                }
+            if (!user.getPartner_id().equals(user.getId())) {
+                EditText idPartner = findViewById(R.id.companionID);
+                idPartner.setText(user.getPartner_id());
+                idPartner.setSelection(user.getPartner_id().length());
             }
         }
         setPartner();
