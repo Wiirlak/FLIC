@@ -12,14 +12,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.Random;
 
@@ -92,7 +89,6 @@ public class LinkActivity extends AppCompatActivity {
 
     public void listenPartner() {
         if(user.getPartner_id() == null || user.getPartner_id().equals("")) {
-            System.out.println("oooooo");
             return;
         }
         final DocumentReference docRef = dbf.collection("user").document(user.partner_id);
@@ -111,14 +107,17 @@ public class LinkActivity extends AppCompatActivity {
                     if (task.isSuccessful()){
                         DocumentSnapshot document = task.getResult();
                         if(document != null)
-                            if(document.get("partner_id") != null && document.get("partner_id").equals(""))
-                                if(!document.get("partner_id").equals(user.getId())) {
+                            if(document.get("partner_id") != null || document.get("partner_id").equals("")) {
+                                if (!document.get("partner_id").equals(user.getId())) {
                                     user.setPartner_id(document.get("partner_id").toString());
                                     SPHelper.saveUserToSharedPreference(getApplicationContext(), user);
                                     TextView partner = findViewById(R.id.companionID);
                                     partner.setText(user.getPartner_id());
                                     listenPartner();
+                                }else{
+                                    gotoMain();
                                 }
+                            }
                     }
                 });
     }
