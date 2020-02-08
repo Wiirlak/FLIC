@@ -75,9 +75,7 @@ public class LinkActivity extends AppCompatActivity {
         waitingMessage(false);
     }
 
-    public void setPartner(View view) {
-        setPartner();
-    }
+    public void setPartner(View view) { setPartner(); }
     public void setPartner() {
         TextView partner = findViewById(R.id.companionID);
         user.setPartner_id(partner.getText().toString());
@@ -85,12 +83,16 @@ public class LinkActivity extends AppCompatActivity {
         SPHelper.saveUserToSharedPreference(getApplicationContext(), user);
 
 //        Toast.makeText(getApplicationContext(), "id envoyé", Toast.LENGTH_SHORT).show();
-        waitingMessage(true);
-        listenPartner();
+        if(partner.getText() != null) {
+            waitingMessage(true);
+            listenPartner();
+        }
 
     }
 
     public void listenPartner() {
+        if(user.partner_id == null)
+            return;
         final DocumentReference docRef = dbf.collection("user").document(user.partner_id);
         docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -169,6 +171,4 @@ public class LinkActivity extends AppCompatActivity {
         }while(false);
         return id;
     }
-
-
 }
