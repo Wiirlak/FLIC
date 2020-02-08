@@ -51,7 +51,7 @@ public class State extends Service {
             // Normally we would do some work here, like download a file.
             // For our sample, we just sleep for 5 seconds.
             System.out.println("ok boomer");
-            final int delay = 10000; //milliseconds
+            final int delay = 22000; //milliseconds
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable(){
                 public void run(){

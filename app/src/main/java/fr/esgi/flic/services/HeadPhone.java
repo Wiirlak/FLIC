@@ -44,7 +44,7 @@ public class HeadPhone extends Service {
         public void handleMessage(Message msg) {
             // Normally we would do some work here, like download a file.
             // For our sample, we just sleep for 5 seconds.
-            final int delay = 8000; //milliseconds
+            final int delay = 25000; //milliseconds
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable(){
                 @Override

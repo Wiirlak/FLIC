@@ -47,7 +47,7 @@ public class Database extends Service {
     public void onCreate() {
         User u = SPHelper.getSavedUserFromPreference(context, User.class);
         String coupled_id = u.getPartner_id();
-//        String coupled_id = "senyuhG15nVVusKgX9ul";
+//        String coupled_id = "CuWf87";
         final DocumentReference docRef = db.collection("user").document(coupled_id);
         db.collection("notifications")
                 .whereEqualTo("user_id", docRef)
