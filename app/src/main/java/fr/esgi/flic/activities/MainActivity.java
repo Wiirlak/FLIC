@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -18,10 +19,13 @@ import fr.esgi.flic.R;
 import fr.esgi.flic.activities.fragments.HeadphoneList;
 import fr.esgi.flic.activities.fragments.LocalisationList;
 import fr.esgi.flic.activities.fragments.StateList;
+import fr.esgi.flic.object.User;
 import fr.esgi.flic.services.Database;
 import fr.esgi.flic.services.HeadPhone;
 import fr.esgi.flic.services.Locations;
 import fr.esgi.flic.services.State;
+import fr.esgi.flic.utils.FirebaseHelper;
+import fr.esgi.flic.utils.SPHelper;
 
 import android.Manifest;
 import android.app.NotificationChannel;
@@ -32,9 +36,21 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
+
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.w3c.dom.Document;
 
 public class MainActivity extends AppCompatActivity {
     final static private String TAG = "AndroidMainActivity";
+    FirebaseHelper db = new FirebaseHelper();
+    FirebaseFirestore database = FirebaseFirestore.getInstance();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +76,31 @@ public class MainActivity extends AppCompatActivity {
             );
             return;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        User user = SPHelper.getSavedUserFromPreference(getApplicationContext(), User.class);
+
+        database.collection("user")
+                .whereEqualTo("user", user.getPartner_id())
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(TAG, "Listen failed.", e);
+                            return;
+                        }
+
+                        if(queryDocumentSnapshots.getDocuments().size() > 0) {
+                            if(queryDocumentSnapshots.getDocuments().get(0).get("partner_id") == null) {
+                                unlinkUser();
+                            }
+                        }
+                    }
+                });
     }
 
     private void createNotificationChannel() {
@@ -123,5 +164,27 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if(findViewById(R.id.big_list_layout) != null)
             findViewById(R.id.big_list_layout).setVisibility(View.INVISIBLE);
+    }
+
+    public void unlinkUser(View view) {
+        User user = SPHelper.getSavedUserFromPreference(getApplicationContext(), User.class);
+
+        user.setPartner_id(null);
+        db.post("user", user.getId(), user);
+
+        Intent i = new Intent(this, LinkActivity.class);
+        startActivity(i);
+        finish();
+    }
+
+    public void unlinkUser() {
+        User user = SPHelper.getSavedUserFromPreference(getApplicationContext(), User.class);
+
+        user.setPartner_id(null);
+        db.post("user", user.getId(), user);
+
+        Intent i = new Intent(this, LinkActivity.class);
+        startActivity(i);
+        finish();
     }
 }
