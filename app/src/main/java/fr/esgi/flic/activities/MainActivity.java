@@ -8,12 +8,18 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
+
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import fr.esgi.flic.R;
 import fr.esgi.flic.activities.fragments.HeadphoneList;
@@ -26,25 +32,6 @@ import fr.esgi.flic.services.Locations;
 import fr.esgi.flic.services.State;
 import fr.esgi.flic.utils.FirebaseHelper;
 import fr.esgi.flic.utils.SPHelper;
-
-import android.Manifest;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
-
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import org.w3c.dom.Document;
 
 public class MainActivity extends AppCompatActivity {
     final static private String TAG = "AndroidMainActivity";
@@ -181,10 +168,11 @@ public class MainActivity extends AppCompatActivity {
     public void unlinkUser() {
         User user = SPHelper.getSavedUserFromPreference(getApplicationContext(), User.class);
 
+        db.post("user", user.getPartner_id(), "partner_id", null);
         user.setPartner_id(null);
         db.post("user", user.getId(), user);
 
-        SPHelper.saveUserToSharedPreference(getApplicationContext(), User.class);
+        SPHelper.saveUserToSharedPreference(getApplicationContext(), user);
         Intent i = new Intent(this, LinkActivity.class);
         startActivity(i);
         finish();
