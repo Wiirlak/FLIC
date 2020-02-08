@@ -38,18 +38,8 @@ public class DatabaseProvider {
 // Add a new document with a generated ID
         db.collection(table)
                 .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });
+                .addOnSuccessListener(documentReference -> Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId()))
+                .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
     }
     public static void addDataHeadphone(Context context,String table, boolean plugged){
         //ADD DATA TO FIREBASE
@@ -66,18 +56,8 @@ public class DatabaseProvider {
 // Add a new document with a generated ID
         db.collection(table)
                 .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });
+                .addOnSuccessListener(documentReference -> Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId()))
+                .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
     }
 
     public static void addDataState(Context context,String table, String activity){
@@ -85,27 +65,20 @@ public class DatabaseProvider {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         User u = SPHelper.getSavedUserFromPreference(context, User.class);
         String coupled_id = u.getId();
+        System.out.println("OUF: "+coupled_id);
+
         final DocumentReference docRef = db.collection("user").document(coupled_id);
         Map<String, Object> user = new HashMap<>();
         user.put("date", new Date());
         user.put("type", context.getResources().getString(R.string.STATE_TEXT));
         user.put("user_id", docRef); // user_id
         user.put("value", activity);
+        System.out.println("DINGUE: "+docRef);
 
 // Add a new document with a generated ID
         db.collection(table)
                 .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });
+                .addOnSuccessListener(documentReference -> Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId()))
+                .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
     }
 }

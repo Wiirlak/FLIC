@@ -60,6 +60,17 @@ public class MainActivity extends AppCompatActivity {
             );
             return;
         }
+        if (ContextCompat.checkSelfPermission(
+                MainActivity.this,
+                Manifest.permission.ACTIVITY_RECOGNITION) !=
+                PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    MainActivity.this,
+                    new String[]{Manifest.permission.ACTIVITY_RECOGNITION},
+                    52
+            );
+            return;
+        }
     }
 
     private void createNotificationChannel() {
