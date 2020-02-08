@@ -20,6 +20,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import fr.esgi.flic.R;
+import fr.esgi.flic.object.User;
+import fr.esgi.flic.utils.SPHelper;
 import fr.esgi.flic.utils.Tools;
 
 public class StateFragment extends Fragment {
@@ -37,9 +39,12 @@ public class StateFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         TextView tv = (TextView) getView().findViewById(R.id.latest_states_notifications);
+        User user = SPHelper.getSavedUserFromPreference(getContext(), User.class);
 
-        db.collection("notifications")// TODO ajouter condition user = id de l'utilisateur couplé
+
+        db.collection("notifications")
                 .whereEqualTo("type", "state")
+                .whereEqualTo("user_id", user.getPartner_id())
                 .orderBy("date", Query.Direction.DESCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @SuppressLint("ResourceType")
@@ -55,7 +60,7 @@ public class StateFragment extends Fragment {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    for (int i = 0; i < 3; i++) {
+                                    for (int i = 0; i < Tools.min(queryDocumentSnapshots.getDocuments().size(), 3); i++) {
                                         tv.setText(tv.getText() + "\n" + Tools.stateSwitch(queryDocumentSnapshots.getDocuments().get(i).get("value").toString()) + DateFormat.format(" le dd/MM/yyyy à hh:mm:ss", queryDocumentSnapshots.getDocuments().get(0).getDate("date")));
                                     }
 

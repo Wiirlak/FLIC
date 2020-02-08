@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        findViewById(R.id.big_list_layout).setVisibility(View.INVISIBLE);
+        if(findViewById(R.id.big_list_layout) != null)
+            findViewById(R.id.big_list_layout).setVisibility(View.INVISIBLE);
     }
 }

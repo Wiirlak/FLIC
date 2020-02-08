@@ -46,4 +46,11 @@ public class Tools {
         // Log.d("getLocalisationURL", "https://www.google.com/maps/search/?api=1&query=" + latitude + "," + longitude);
         return "https://www.google.com/maps/search/?api=1&query=" + latitude + "," + longitude;
     }
+
+    public static int min(int to_test, int min) {
+        if(to_test <= min)
+            return to_test;
+        else
+            return min;
+    }
 }

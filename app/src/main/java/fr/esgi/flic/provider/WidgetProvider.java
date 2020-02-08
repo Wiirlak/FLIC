@@ -26,6 +26,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import fr.esgi.flic.R;
 import fr.esgi.flic.activities.MainActivity;
+import fr.esgi.flic.object.User;
+import fr.esgi.flic.utils.SPHelper;
+
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 
 public class WidgetProvider extends AppWidgetProvider {
 
@@ -54,14 +58,34 @@ public class WidgetProvider extends AppWidgetProvider {
         final int N = appWidgetIds.length;
         SharedPreferences prefs = context.getApplicationContext().getSharedPreferences("data", 0);
 
-        String coupled_id = prefs.getString("coupled_id", "senyuhG15nVVusKgX9ul"); //TODO remplacer avec une valeur id par défaut
+        User coupled_id = SPHelper.getSavedUserFromPreference(context, User.class);
         final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_flic);
 
-        final DocumentReference docRef = db.collection("user").document(coupled_id);
+        final DocumentReference docRef = db.collection("user").document(coupled_id.getPartner_id());
         final CollectionReference notifications = db.collection("notifications");
 
-
         db.collection("notifications")
+                .whereEqualTo("user_id", coupled_id.getPartner_id())
+                .orderBy("date", Query.Direction.DESCENDING)
+                .limit(1)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(TAG, "Listen failed.", e);
+                            return;
+                        }
+
+                        if(queryDocumentSnapshots.getDocuments().size() > 0) {
+                            views.setTextViewText(R.id.notif_title, queryDocumentSnapshots.getDocuments().get(0).get("type").toString());
+                            views.setTextViewText(R.id.notif_value, queryDocumentSnapshots.getDocuments().get(0).get("value").toString());
+
+                            appWidgetManager.updateAppWidget(appWidgetIds[0], views);
+                        }
+                    }
+                });
+
+        /*db.collection("notifications")
                 .whereEqualTo("user_id", docRef)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -72,11 +96,11 @@ public class WidgetProvider extends AppWidgetProvider {
                             return;
                         }
 
-                        /*HashMap<Object, Object> notifs = new HashMap<Object, Object>();
+                        *//*HashMap<Object, Object> notifs = new HashMap<Object, Object>();
                         for (QueryDocumentSnapshot doc : value) {
                             notifs.put(doc.get("type"), doc.get("value"));
                         }
-                        Log.d(TAG, "Current notifications : " + notifs);*/
+                        Log.d(TAG, "Current notifications : " + notifs);*//*
 
                         Log.d(TAG, "getting latest notifications");
                         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -123,7 +147,7 @@ public class WidgetProvider extends AppWidgetProvider {
                         });
 
                     }
-                });
+                });*/
 
         for (int i=0; i<N; i++) {
             int appWidgetId = appWidgetIds[i];

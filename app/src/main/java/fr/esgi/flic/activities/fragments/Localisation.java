@@ -54,9 +54,9 @@ public class Localisation extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
 
-        TextView tv = (TextView) getView().findViewById(R.id.latest_localisations_notifications);
+        /*TextView tv = (TextView) getView().findViewById(R.id.latest_localisations_notifications);
 
-        db.collection("notifications")// TODO ajouter condition user = id de l'utilisateur couplé
+        db.collection("notifications")
                 .whereEqualTo("type", "localisation")
                 .orderBy("date", Query.Direction.DESCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -76,13 +76,13 @@ public class Localisation extends Fragment {
                                         //tv.setText(tv.getText() + "\n" + Tools.getLocalisationURL(queryDocumentSnapshots.getDocuments().get(i).get("value").toString()) + DateFormat.format(" le dd/MM/yyyy à hh:mm:ss", queryDocumentSnapshots.getDocuments().get(0).getDate("date")));
                                         //tv.setText(tv.getText() + "\n" + Html.fromHtml("<a href=\""+ Tools.getLocalisationURL(queryDocumentSnapshots.getDocuments().get(i).get("value").toString()) + "\">Ici</a>\n") + DateFormat.format(" le dd/MM/yyyy à hh:mm:ss", queryDocumentSnapshots.getDocuments().get(0).getDate("date")));
                                     }
-                                    Log.d(TAG, "MAP = " + Tools.getLocalisationURL(queryDocumentSnapshots.getDocuments().get(0).get("value").toString()));
+                                    //Log.d(TAG, "MAP = " + Tools.getLocalisationURL(queryDocumentSnapshots.getDocuments().get(0).get("value").toString()));
                                 }
                             });
                         }
 
                     }
-                });
+                });*/
 
     }
 

@@ -32,7 +32,11 @@ import java.util.Iterator;
 import java.util.Locale;
 
 import fr.esgi.flic.R;
+import fr.esgi.flic.object.User;
+import fr.esgi.flic.utils.SPHelper;
 import fr.esgi.flic.utils.Tools;
+
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 
 public class Headphone extends Fragment {
 
@@ -50,9 +54,11 @@ public class Headphone extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         TextView tv = (TextView) getView().findViewById(R.id.latest_headphone_state_notifications);
+        User user = SPHelper.getSavedUserFromPreference(getContext(), User.class);
 
-        db.collection("notifications") // TODO ajouter condition user = id de l'utilisateur couplé
+        db.collection("notifications")
                 .whereEqualTo("type", "headphone")
+                .whereEqualTo("user_id", user.getPartner_id())
                 .orderBy("date", Query.Direction.DESCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @SuppressLint("ResourceType")
@@ -70,7 +76,7 @@ public class Headphone extends Fragment {
 
                                 @Override
                                 public void run() {
-                                    for (int i = 0; i < 3; i++) {
+                                    for (int i = 0; i < Tools.min(queryDocumentSnapshots.getDocuments().size(), 3); i++) {
                                         tv.setText(tv.getText() + "\n" + Tools.headphoneSwitch(queryDocumentSnapshots.getDocuments().get(i).get("value").toString()) + DateFormat.format(" le dd/MM/yyyy à hh:mm:ss", queryDocumentSnapshots.getDocuments().get(0).getDate("date")));
                                     }
                                 }
