@@ -51,7 +51,7 @@ public class LinkActivity extends AppCompatActivity {
         }else{
             TextView partner = findViewById(R.id.companionID);
             partner.setText(user.getPartner_id());
-            listenPartner();
+            updateSPFromFB();
         }
 
         TextView idUser = findViewById(R.id.personnalID);
@@ -103,6 +103,26 @@ public class LinkActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void updateSPFromFB(){
+        dbf.collection("user")
+                .document(user.getId())
+                .get()
+                .addOnCompleteListener((task) -> {
+                    if (task.isSuccessful()){
+                        DocumentSnapshot document = task.getResult();
+                        if(document != null)
+                            if(document.get("partner_id") != null)
+                                if(!document.get("partner_id").equals(user.getId())) {
+                                    user.setPartner_id(document.get("partner_id").toString());
+                                    SPHelper.saveUserToSharedPreference(getApplicationContext(), user);
+                                    TextView partner = findViewById(R.id.companionID);
+                                    partner.setText(user.getPartner_id());
+                                    listenPartner();
+                                }
+                    }
+                });
     }
 
     public void checkLink(){
