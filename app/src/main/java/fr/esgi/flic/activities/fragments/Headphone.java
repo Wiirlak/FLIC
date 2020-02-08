@@ -63,6 +63,7 @@ public class Headphone extends Fragment {
                             return;
                         }
 
+                        tv.setText("Derniers états des écouteurs : \n");
                         if(!queryDocumentSnapshots.isEmpty()) {
                             getActivity().runOnUiThread(new Runnable() {
 

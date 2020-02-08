@@ -49,6 +49,7 @@ public class StateFragment extends Fragment {
                             Log.w(TAG, "Listen failed.", e);
                             return;
                         }
+                        tv.setText("Derniers moyens de déplacement : ");
 
                         if(!queryDocumentSnapshots.isEmpty()) {
                             getActivity().runOnUiThread(new Runnable() {
