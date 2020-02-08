@@ -70,10 +70,10 @@ public class State extends Service {
                                         DatabaseProvider.addDataState(context,"notifications", StateUtils.returnStateToString(probableActivity.getType()));
 
                                     }else{
-                                        Log.i("NOKLeee", probableActivity.toString());
+//                                        Log.i("NOKLeee", probableActivity.toString());
                                     }
                                 }else{
-                                    Log.i("NOKLaa", probableActivity.toString());
+//                                    Log.i("NOKLaa", probableActivity.toString());
                                 }
                             })
                             .addOnFailureListener(e -> System.out.println("Could not get state: " + e));
