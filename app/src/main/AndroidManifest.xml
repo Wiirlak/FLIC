@@ -3,23 +3,64 @@
     xmlns:dist="http://schemas.android.com/apk/distribution"
     package="fr.esgi.flic">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
+
     <dist:module dist:instant="true" />
+
+    <meta-data
+        android:name="com.google.android.awareness.AsPI_KEY"
+        android:value="AIzaSyBbe_enDNeA0Tm9UGJTH6Pj_kB5eitOVtE" />
+    <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyCbVpvdwsnOUlRWMa1wd72RnjIZ-sMG0oQ" />
+    <meta-data
+        android:name="com.google.android.nearby.messages.API_KEY"
+        android:value="AIzaSyCbVpvdwsnOUlRWMa1wd72RnjIZ-sMG0oQ" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/flic_minimal_round"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/flic_minimal_nofill"
         android:supportsRtl="true"
         android:theme="@style/Theme.NoTitle">
-        <activity android:name=".LinkActivity"></activity>
-        <activity android:name=".MainActivity">
+        <service
+            android:name=".services.State"
+            android:enabled="true"
+            android:exported="true"></service>
+        <service
+            android:name=".services.Database"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".services.HeadPhone"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".services.Locations"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".activities.LinkActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".activities.MainActivity">
+        </activity>
+
+        <receiver android:name=".provider.WidgetProvider" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/appwidget_provider" />
+        </receiver>
     </application>
 
 </manifest>
