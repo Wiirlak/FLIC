@@ -172,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
         user.setPartner_id(null);
         db.post("user", user.getId(), user);
 
+        SPHelper.saveUserToSharedPreference(getApplicationContext(), User.class);
         Intent i = new Intent(this, LinkActivity.class);
         startActivity(i);
         finish();
@@ -183,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
         user.setPartner_id(null);
         db.post("user", user.getId(), user);
 
+        SPHelper.saveUserToSharedPreference(getApplicationContext(), User.class);
         Intent i = new Intent(this, LinkActivity.class);
         startActivity(i);
         finish();
