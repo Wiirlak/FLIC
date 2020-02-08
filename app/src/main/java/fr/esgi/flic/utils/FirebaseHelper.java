@@ -10,10 +10,14 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import fr.esgi.flic.object.Notifications;
 import fr.esgi.flic.object.User;
+import android.util.Log;
+
 
 public class FirebaseHelper {
     private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
@@ -21,7 +25,12 @@ public class FirebaseHelper {
     private static final String TAG = "AppWidgetProvider";
 
     public Object get(String collection, String field, String value) {
-        return db.collection(collection).whereEqualTo(field, value).get();
+        try {
+            return Tasks.await(db.collection(collection).whereEqualTo(field, value).get());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public Object get(String collection, String id){
@@ -78,6 +87,21 @@ public class FirebaseHelper {
         return db.collection(collection).document(id).delete();
     }
 
+    public ArrayList<Notifications> getNotifications(String type, int limit) {
+        Log.d("Android FirebaseHelper", "getting notifications...");
+        Task result;
+        try {
+            if(limit > 0)
+                result = db.collection("notifications").whereEqualTo("type", type).limit(limit).get();
+            else
+                result = db.collection("notifications").whereEqualTo("type", type).get();
+            Tasks.await(result);
+            return (ArrayList<Notifications>) result.getResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public boolean exist(String collection, String id){
         final boolean[] existing = new boolean[1];

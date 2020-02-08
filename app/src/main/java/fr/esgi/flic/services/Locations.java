@@ -60,7 +60,7 @@ public class Locations extends Service {
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    System.out.println("Could not get Location state: " + e);
+                                    System.out.println("Could not get Localisation state: " + e);
                                 }
                             });
                     handler.postDelayed(this, delay);

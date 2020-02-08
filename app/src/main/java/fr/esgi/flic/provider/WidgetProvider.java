@@ -24,8 +24,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import fr.esgi.flic.activities.MainActivity;
 import fr.esgi.flic.R;
+import fr.esgi.flic.activities.MainActivity;
 
 public class WidgetProvider extends AppWidgetProvider {
 
@@ -131,7 +131,6 @@ public class WidgetProvider extends AppWidgetProvider {
             Log.d(TAG, "onUpdate");
             Intent intent = new Intent(context, MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-            views.setOnClickPendingIntent(R.id.button, pendingIntent);
             views.setInt(R.id.LinearLayout, "setBackgroundColor", Color.WHITE);
 
 

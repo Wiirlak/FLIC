@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import androidx.annotation.NonNull;
 
+@SuppressWarnings("deprecation")
 public class State extends Service {
 
     public static Context context;
