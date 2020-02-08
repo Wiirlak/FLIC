@@ -25,6 +25,7 @@ import androidx.annotation.NonNull;
 import fr.esgi.flic.provider.DatabaseProvider;
 import fr.esgi.flic.utils.StateUtils;
 
+@SuppressWarnings("deprecation")
 public class State extends Service {
 
     public static Context context;

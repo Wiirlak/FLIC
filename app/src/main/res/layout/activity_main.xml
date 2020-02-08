@@ -8,6 +8,7 @@
     tools:context=".activities.MainActivity">
 
     <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,69 +47,89 @@
         app:srcCompat="@android:drawable/ic_menu_preferences" />
 
     <TableLayout
+        android:id="@+id/tableLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_height="0dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/placeholder_frame"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView">
+        app:layout_constraintTop_toBottomOf="@id/imageView">
+
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="189dp">
+            android:layout_height="wrap_content">
 
             <FrameLayout
+                android:id="@+id/headphone_frame"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="24dp"
-                android:layout_weight="2"
+                android:layout_weight="0.25"
+                android:onClick="showHeadphoneNotifList"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <fragment
+                    android:id="@+id/headphone_fragment"
+                    android:name="fr.esgi.flic.activities.fragments.Headphone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/localisation_frame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="24dp"
+                android:layout_weight="0.75"
+                android:onClick="showLocalisationNotifList"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView">
+                app:layout_constraintTop_toBottomOf="parent">
 
                 <fragment
-                    android:id="@+id/fragment"
-                    android:name="fr.esgi.flic.activities.fragments.Location"
+                    android:id="@+id/localisation_fragment"
+                    android:name="fr.esgi.flic.activities.fragments.Localisation"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
             </FrameLayout>
 
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
             <FrameLayout
+                android:id="@+id/state_frame"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="24dp"
-                android:layout_weight="2"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView">
+                android:layout_weight="1"
+                android:onClick="showStateNotifList">
 
                 <fragment
-                    android:id="@+id/fragment2"
-                    android:name="fr.esgi.flic.activities.fragments.Location"
+                    android:id="@+id/state_fragment"
+                    android:name="fr.esgi.flic.activities.fragments.StateFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
-
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="24dp"
-                android:layout_weight="2"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView">
-
-                <Button
-                    android:id="@+id/button"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center"
-                    android:text="+" />
             </FrameLayout>
 
         </TableRow>
 
     </TableLayout>
+
+    <FrameLayout
+        android:id="@+id/placeholder_frame"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tableLayout"
+        tools:layout_editor_absoluteX="411dp">
+
+    </FrameLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
