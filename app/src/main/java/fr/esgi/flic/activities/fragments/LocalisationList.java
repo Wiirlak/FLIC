@@ -54,6 +54,7 @@ public class LocalisationList extends Fragment {
                             return;
                         }
 
+                        list.setText("");
                         if(!queryDocumentSnapshots.isEmpty()) {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override

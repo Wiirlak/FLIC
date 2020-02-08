@@ -52,7 +52,7 @@ public class HeadphoneList extends Fragment {
                             Log.w(TAG, "Listen failed.", e);
                             return;
                         }
-
+                        list.setText("");
                         if(!queryDocumentSnapshots.isEmpty()) {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
