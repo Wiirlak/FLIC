@@ -54,14 +54,14 @@ public class StateFragment extends Fragment {
                             Log.w(TAG, "Listen failed.", e);
                             return;
                         }
-                        tv.setText("Derniers moyens de déplacement : ");
+                        tv.setText("Appuyez ici pour obtenir les derniers déplacements");
 
                         if(!queryDocumentSnapshots.isEmpty()) {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     for (int i = 0; i < Tools.min(queryDocumentSnapshots.getDocuments().size(), 3); i++) {
-                                        tv.setText(tv.getText() + "\n" + Tools.stateSwitch(queryDocumentSnapshots.getDocuments().get(i).get("value").toString()) + DateFormat.format(" le dd/MM/yyyy à hh:mm:ss", queryDocumentSnapshots.getDocuments().get(0).getDate("date")));
+                                        //tv.setText(tv.getText() + "\n" + Tools.stateSwitch(queryDocumentSnapshots.getDocuments().get(i).get("value").toString()) + DateFormat.format(" le dd/MM/yyyy à hh:mm:ss", queryDocumentSnapshots.getDocuments().get(0).getDate("date")));
                                     }
 
                                 }

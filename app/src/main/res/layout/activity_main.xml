@@ -59,14 +59,15 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="50dp"
+            android:weightSum="3">
 
             <FrameLayout
                 android:id="@+id/headphone_frame"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="24dp"
-                android:layout_weight="0.25"
+                android:layout_weight="1"
                 android:onClick="showHeadphoneNotifList"
                 app:layout_constraintStart_toStartOf="parent">
 
@@ -83,11 +84,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="24dp"
-                android:layout_weight="0.75"
-                android:onClick="showLocalisationNotifList"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="parent">
+                android:layout_weight="1"
+                android:onClick="showLocalisationNotifList">
 
                 <fragment
                     android:id="@+id/localisation_fragment"
@@ -97,16 +95,11 @@
 
             </FrameLayout>
 
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
             <FrameLayout
                 android:id="@+id/state_frame"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="24dp"
                 android:layout_weight="1"
                 android:onClick="showStateNotifList">
 
@@ -124,7 +117,7 @@
     <FrameLayout
         android:id="@+id/placeholder_frame"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="450dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tableLayout"
         tools:layout_editor_absoluteX="411dp">

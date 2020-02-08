@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_green_square"
+    android:gravity="center"
+    android:textAlignment="center"
     tools:context=".activities.fragments.StateFragment">
 
     <TextView
@@ -14,7 +16,16 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:gravity="center|center_horizontal|center_vertical"
-        android:text="Derniers moyens de déplacement :" />
+        android:gravity="center"
+        android:text="Appuyez ici pour avoir les derniers déplacements"
+        android:visibility="invisible"/>
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/state_icon"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"
+        android:layout_margin="15dp"
+        android:src="@drawable/movement" />
+</FrameLayout>

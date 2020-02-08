@@ -69,7 +69,7 @@ public class Headphone extends Fragment {
                             return;
                         }
 
-                        tv.setText("Derniers états des écouteurs : \n");
+                        tv.setText("Appuyez ici pour avoir les états des écouteurs");
                         if(!queryDocumentSnapshots.isEmpty()) {
                             getActivity().runOnUiThread(new Runnable() {
 
@@ -77,7 +77,7 @@ public class Headphone extends Fragment {
                                 @Override
                                 public void run() {
                                     for (int i = 0; i < Tools.min(queryDocumentSnapshots.getDocuments().size(), 3); i++) {
-                                        tv.setText(tv.getText() + "\n" + Tools.headphoneSwitch(queryDocumentSnapshots.getDocuments().get(i).get("value").toString()) + DateFormat.format(" le dd/MM/yyyy à hh:mm:ss", queryDocumentSnapshots.getDocuments().get(0).getDate("date")));
+                                        //tv.setText(tv.getText() + "\n" + Tools.headphoneSwitch(queryDocumentSnapshots.getDocuments().get(i).get("value").toString()) + DateFormat.format(" le dd/MM/yyyy à hh:mm:ss", queryDocumentSnapshots.getDocuments().get(0).getDate("date")));
                                     }
                                 }
                             });

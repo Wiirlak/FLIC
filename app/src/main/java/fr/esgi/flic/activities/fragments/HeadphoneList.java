@@ -62,7 +62,7 @@ public class HeadphoneList extends Fragment {
                                 @Override
                                 public void run() {
                                     for (int i = 0; i < Tools.min(queryDocumentSnapshots.getDocuments().size(), 50); i++) {
-                                        list.setText(list.getText() + "\n" + Tools.headphoneSwitch(queryDocumentSnapshots.getDocuments().get(i).get("value").toString()) + DateFormat.format(" le dd/MM/yyyy à hh:mm:ss", queryDocumentSnapshots.getDocuments().get(0).getDate("date")));
+                                        list.setText(list.getText() + "\n" + Tools.headphoneSwitch(queryDocumentSnapshots.getDocuments().get(i).get("value").toString()) + DateFormat.format(" le dd/MM/yyyy à hh:mm:ss", queryDocumentSnapshots.getDocuments().get(i).getDate("date")));
                                     }
 
                                 }

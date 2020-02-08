@@ -37,21 +37,10 @@ public class WidgetProvider extends AppWidgetProvider {
 
     private static final String TAG = "AppWidgetProvider";
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    //FirebaseHelper fbHelper = new FirebaseHelper(); //TODO retirer les lignes de code pour tester avant de livrer
 
     @Override
     public void onEnabled(Context context) {
         Log.d(TAG, "onEnabled");
-        /*Task test = (Task) fbHelper.get("notifications", "type", "headphone");
-        test.addOnCompleteListener(new OnCompleteListener() {
-            @Override
-            public void onComplete(@NonNull Task task) {
-                if(task.isSuccessful()) {
-                    QuerySnapshot result = (QuerySnapshot) task.getResult();
-                    System.out.println("RESULT = " + result.getDocuments());
-                }
-            }
-        });*/
 
     }
 
@@ -87,70 +76,6 @@ public class WidgetProvider extends AppWidgetProvider {
                         }
                     }
                 });
-
-        /*db.collection("notifications")
-                .whereEqualTo("user_id", docRef)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value,
-                                        @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.w(TAG, "Listen failed.", e);
-                            return;
-                        }
-
-                        *//*HashMap<Object, Object> notifs = new HashMap<Object, Object>();
-                        for (QueryDocumentSnapshot doc : value) {
-                            notifs.put(doc.get("type"), doc.get("value"));
-                        }
-                        Log.d(TAG, "Current notifications : " + notifs);*//*
-
-                        Log.d(TAG, "getting latest notifications");
-                        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot document = task.getResult();
-                                    if (document.exists()) {
-                                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                        Query query = db.collection("notifications")
-                                                .whereEqualTo("user_id", docRef)
-                                                .orderBy("date", Query.Direction.DESCENDING)
-                                                .limit(1);
-                                        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                if (task.isSuccessful()) {
-                                                    QuerySnapshot document = task.getResult();
-                                                    if (!document.isEmpty()) {
-                                                        //Log.d(TAG, "QuerySnapshot data: " + document.getDocuments());
-                                                        Log.d(TAG, "LATEST NOTIF TITLE : " + document.getDocuments().get(0).get("type"));
-                                                        Log.d(TAG, "LATEST NOTIF VALUE : " + document.getDocuments().get(0).get("value"));
-
-                                                        views.setTextViewText(R.id.notif_title, document.getDocuments().get(0).get("type").toString());
-                                                        views.setTextViewText(R.id.notif_value, document.getDocuments().get(0).get("value").toString());
-
-                                                        appWidgetManager.updateAppWidget(appWidgetIds[0], views);
-
-                                                    } else {
-                                                        Log.d(TAG, "No such document");
-                                                    }
-                                                } else {
-                                                    Log.e(TAG, task.getException().getLocalizedMessage());
-                                                }
-                                            }
-                                        });
-                                    } else {
-                                        Log.d(TAG, "No such document");
-                                    }
-                                } else {
-                                    Log.d(TAG, "get failed with ", task.getException());
-                                }
-                            }
-                        });
-
-                    }
-                });*/
 
         for (int i=0; i<N; i++) {
             int appWidgetId = appWidgetIds[i];

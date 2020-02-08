@@ -1,41 +1,21 @@
 package fr.esgi.flic.activities.fragments;
 
-import androidx.lifecycle.ViewModelProviders;
-
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.text.Html;
-import android.text.format.DateFormat;
-import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.widget.TextView;
 
-import com.google.android.gms.maps.MapView;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.Map;
 
 import fr.esgi.flic.R;
-import fr.esgi.flic.object.LocationViewModel;
-import fr.esgi.flic.utils.Tools;
 
 public class Localisation extends Fragment {
 
-    private LocationViewModel mViewModel;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     final private String TAG = "FragmentLocalisation";
 
@@ -52,7 +32,6 @@ public class Localisation extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
 
         /*TextView tv = (TextView) getView().findViewById(R.id.latest_localisations_notifications);
 
