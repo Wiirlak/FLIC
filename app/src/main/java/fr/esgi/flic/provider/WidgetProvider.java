@@ -47,11 +47,12 @@ public class WidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
         final int N = appWidgetIds.length;
-        SharedPreferences prefs = context.getApplicationContext().getSharedPreferences("data", 0);
 
         User coupled_id = SPHelper.getSavedUserFromPreference(context, User.class);
         final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_flic);
 
+        if(coupled_id.getPartner_id() == null || coupled_id.getPartner_id().equals(""))
+                return;
         final DocumentReference docRef = db.collection("user").document(coupled_id.getPartner_id());
         final CollectionReference notifications = db.collection("notifications");
 

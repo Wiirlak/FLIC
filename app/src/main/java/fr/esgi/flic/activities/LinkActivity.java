@@ -50,7 +50,7 @@ public class LinkActivity extends AppCompatActivity {
             db.post("user", user.getId(), user);
         }else{
             TextView partner = findViewById(R.id.companionID);
-            partner.setText(user.getPartner_id());
+            partner.setText(user.getPartner_id()==null?"":user.getPartner_id());
             updateSPFromFB();
         }
 
@@ -91,7 +91,7 @@ public class LinkActivity extends AppCompatActivity {
     }
 
     public void listenPartner() {
-        if(user.getPartner_id() == null)
+        if(user.getPartner_id() == null || user.getPartner_id().equals(""))
             return;
         final DocumentReference docRef = dbf.collection("user").document(user.getPartner_id());
         docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
