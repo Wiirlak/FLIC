@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -28,6 +29,7 @@ import fr.esgi.flic.R;
 import fr.esgi.flic.activities.MainActivity;
 import fr.esgi.flic.object.User;
 import fr.esgi.flic.utils.SPHelper;
+import fr.esgi.flic.utils.Tools;
 
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 
@@ -77,8 +79,9 @@ public class WidgetProvider extends AppWidgetProvider {
                         }
 
                         if(queryDocumentSnapshots.getDocuments().size() > 0) {
-                            views.setTextViewText(R.id.notif_title, queryDocumentSnapshots.getDocuments().get(0).get("type").toString());
-                            views.setTextViewText(R.id.notif_value, queryDocumentSnapshots.getDocuments().get(0).get("value").toString());
+                            views.setTextViewText(R.id.widget_description, "Dernière notification reçue" + DateFormat.format(" le dd/MM/yyyy à hh:mm:ss", queryDocumentSnapshots.getDocuments().get(0).getDate("date")) + " :");
+                            views.setTextViewText(R.id.notif_title, Tools.titleSwitch(queryDocumentSnapshots.getDocuments().get(0).get("type").toString()));
+                            views.setTextViewText(R.id.notif_value, Tools.notificationSwitch(queryDocumentSnapshots.getDocuments().get(0).get("type").toString(), queryDocumentSnapshots.getDocuments().get(0).get("value").toString()));
 
                             appWidgetManager.updateAppWidget(appWidgetIds[0], views);
                         }

@@ -8,9 +8,17 @@
     android:minWidth="400dp">
 
     <TextView
+        android:id="@+id/widget_description"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:gravity="center"
+        android:text="Dernière notification reçue"
+        android:textStyle="bold" />
+
+    <TextView
         android:id="@+id/notif_title"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="70dp"
         android:gravity="center"
         android:text="latest_notification_title"
         android:textStyle="bold" />
@@ -18,8 +26,10 @@
     <TextView
         android:id="@+id/notif_value"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="70dp"
+        android:autoLink="web"
         android:gravity="center"
+        android:linksClickable="true"
         android:text="latest_notification_value"
         android:textStyle="bold" />
 </LinearLayout>
