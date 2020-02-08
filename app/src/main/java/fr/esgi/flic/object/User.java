@@ -1,6 +1,4 @@
 package fr.esgi.flic.object;
-import com.google.firebase.database.DatabaseReference;
-
 
 public class User {
 
@@ -8,17 +6,14 @@ public class User {
     public double age;
     public String gender;
     public String userName;
-    public DatabaseReference partner_id;
+    public String partner_id;
+//    public DatabaseReference partner_id;
 
     //required default constructor
     public User() {
     }
 
-    public User(String id) {
-        this.id = id;
-    }
-
-    public User(String id, double age, String gender, String userName, DatabaseReference partner_id) {
+    public User(String id, double age, String gender, String userName, String partner_id) {
         this.id = id;
         this.age = age;
         this.gender = gender;
@@ -58,11 +53,11 @@ public class User {
         this.userName = userName;
     }
 
-    public DatabaseReference getPartner_id() {
+    public String getPartner_id() {
         return partner_id;
     }
 
-    public void setPartner_id(DatabaseReference partner_id) {
+    public void setPartner_id(String partner_id) {
         this.partner_id = partner_id;
     }
 }
