@@ -91,9 +91,9 @@ public class LinkActivity extends AppCompatActivity {
     }
 
     public void listenPartner() {
-        if(user.partner_id == null)
+        if(user.getPartner_id() == null)
             return;
-        final DocumentReference docRef = dbf.collection("user").document(user.partner_id);
+        final DocumentReference docRef = dbf.collection("user").document(user.getPartner_id());
         docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot snapshot,
@@ -126,15 +126,18 @@ public class LinkActivity extends AppCompatActivity {
     }
 
     public void checkLink(){
+        if(user.getPartner_id() == null)
+            return;
         dbf.collection("user")
-                .document(user.partner_id)
+                .document(user.getPartner_id())
                 .get()
                 .addOnCompleteListener((task) -> {
                     if (task.isSuccessful()){
                         DocumentSnapshot document = task.getResult();
                         if(document != null)
-                            if(document.get("partner_id").equals(user.getId()))
-                                gotoMain();
+                            if(document.get("partner_id") != null)
+                                if(document.get("partner_id").equals(user.getId()))
+                                    gotoMain();
                     }
                 });
     }
@@ -142,6 +145,7 @@ public class LinkActivity extends AppCompatActivity {
     public void gotoMain(){
         Intent main = new Intent(this, MainActivity.class);
         startActivity(main);
+        finish();
     }
 
     public void waitingMessage(boolean v) {

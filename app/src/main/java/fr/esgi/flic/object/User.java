@@ -54,7 +54,9 @@ public class User {
     }
 
     public String getPartner_id() {
-        return partner_id;
+        if(!partner_id.equals(""))
+            return partner_id;
+        return null;
     }
 
     public void setPartner_id(String partner_id) {
