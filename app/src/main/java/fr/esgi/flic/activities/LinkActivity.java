@@ -3,6 +3,7 @@ package fr.esgi.flic.activities;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +12,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+
 import java.util.Random;
 
 import fr.esgi.flic.R;
@@ -20,10 +29,9 @@ import fr.esgi.flic.utils.FirebaseHelper;
 import fr.esgi.flic.utils.SPHelper;
 
 public class LinkActivity extends AppCompatActivity {
-    FirebaseHelper db;
+    FirebaseFirestore dbf = FirebaseFirestore.getInstance();
+    FirebaseHelper db = new FirebaseHelper();
     ClipboardManager clipboard;
-    CharSequence id_user;
-    CharSequence id_partner; // can be null
     User user;
 
     @Override
@@ -34,24 +42,21 @@ public class LinkActivity extends AppCompatActivity {
         clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         db = new FirebaseHelper();
 
-        TextView idUser = findViewById(R.id.personnalID);
-        //id_user = idUser.getText();
-        //Usage : getSavedObjectFromPreference(context, "mPreference", "mObjectKey", (Type) SampleClass.class)
-        user = SPHelper.getSavedObjectFromPreference(getApplicationContext(), "mPreference", "mObjectKey", User.class);
+        user = SPHelper.getSavedUserFromPreference(getApplicationContext(), User.class);
         if(user == null) {
-            id_user = generateId();
-
-            User nu = new User(id_user.toString());
-            SPHelper.saveObjectToSharedPreference(getApplicationContext(), "mPreference", "mObjectKey", user);
-            db.post("user", nu.getId(), nu);
-            Toast.makeText(getApplicationContext(), "User créé !", Toast.LENGTH_SHORT).show();
+            user = new User();
+            user.setId(createId());
+            SPHelper.saveUserToSharedPreference(getApplicationContext(), user);
+            db.post("user", user.getId(), user);
         }else{
-            //getfromlocalstorage
-            id_user = generateId();
-            Toast.makeText(getApplicationContext(), "User existant !", Toast.LENGTH_SHORT).show();
+            TextView partner = findViewById(R.id.companionID);
+            partner.setText(user.getPartner_id());
+            updateSPFromFB();
         }
-        idUser.setText(id_user);
-        waitingMessage(false);
+
+        TextView idUser = findViewById(R.id.personnalID);
+        idUser.setText(user.getId());
+        waitingMessage(user.getPartner_id() != null);
     }
 
     @Override
@@ -61,36 +66,82 @@ public class LinkActivity extends AppCompatActivity {
     }
 
     public void onClickCopyLink(View view) {
-        ClipData clip = ClipData.newPlainText("FLIC_my_id", id_user);
-        //ClipData clip = ClipData.newPlainText("FLIC_my_id", "a899c435b"); // Test value
+        ClipData clip = ClipData.newPlainText("FLIC_my_id", user.getId());
         clipboard.setPrimaryClip(clip);
         Toast.makeText(getApplicationContext(), "Ton id a été mis dans le presse-papier !", Toast.LENGTH_SHORT).show();
     }
 
-    public void setPartner(View view) {
-        TextView partner = findViewById(R.id.companionID);
-        id_partner  = partner.getText();
-        db.post("user", id_user.toString(), "partner_id", "user/" + id_partner.toString());
-
-        Toast.makeText(getApplicationContext(), "id envoyé", Toast.LENGTH_SHORT).show();
-        waitingMessage(true);
+    public void onPartnerIdEdit(View view){
+        waitingMessage(false);
     }
 
-    public void applyCopiedLinkOnStart() {
-        if(!clipboard.hasPrimaryClip())
+    public void setPartner(View view) { setPartner(); }
+    public void setPartner() {
+        TextView partner = findViewById(R.id.companionID);
+        user.setPartner_id(partner.getText().toString());
+        db.post("user", user.getId(), user);
+        SPHelper.saveUserToSharedPreference(getApplicationContext(), user);
+
+//        Toast.makeText(getApplicationContext(), "id envoyé", Toast.LENGTH_SHORT).show();
+        if(partner.getText() != null) {
+            waitingMessage(true);
+            listenPartner();
+        }
+
+    }
+
+    public void listenPartner() {
+        if(user.partner_id == null)
             return;
-        ClipData exemple = clipboard.getPrimaryClip();
-        ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
-        id_partner = item.getText();
-        if (id_partner != null) {
-            if (id_partner.length() == 9) {
-                if (!id_partner.toString().equals(id_user.toString())) {
-                    EditText idPartner = findViewById(R.id.companionID);
-                    idPartner.setText(id_partner);
-                    idPartner.setSelection(id_partner.length());
+        final DocumentReference docRef = dbf.collection("user").document(user.partner_id);
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (snapshot != null && snapshot.exists()) {
+                    checkLink();
                 }
             }
-        }
+        });
+    }
+
+    public void updateSPFromFB(){
+        dbf.collection("user")
+                .document(user.getId())
+                .get()
+                .addOnCompleteListener((task) -> {
+                    if (task.isSuccessful()){
+                        DocumentSnapshot document = task.getResult();
+                        if(document != null)
+                            if(document.get("partner_id") != null)
+                                if(!document.get("partner_id").equals(user.getId())) {
+                                    user.setPartner_id(document.get("partner_id").toString());
+                                    SPHelper.saveUserToSharedPreference(getApplicationContext(), user);
+                                    TextView partner = findViewById(R.id.companionID);
+                                    partner.setText(user.getPartner_id());
+                                    listenPartner();
+                                }
+                    }
+                });
+    }
+
+    public void checkLink(){
+        dbf.collection("user")
+                .document(user.partner_id)
+                .get()
+                .addOnCompleteListener((task) -> {
+                    if (task.isSuccessful()){
+                        DocumentSnapshot document = task.getResult();
+                        if(document != null)
+                            if(document.get("partner_id").equals(user.getId()))
+                                gotoMain();
+                    }
+                });
+    }
+
+    public void gotoMain(){
+        Intent main = new Intent(this, MainActivity.class);
+        startActivity(main);
     }
 
     public void waitingMessage(boolean v) {
@@ -98,12 +149,28 @@ public class LinkActivity extends AppCompatActivity {
         TextView waitMessage = findViewById(R.id.waitText);
         if(v){
             waitMessage.setVisibility(TextView.VISIBLE);
-            partner.setFocusable(false);
-            partner.setBackgroundColor(Color.argb(200,122,122,122));
+            partner.setBackgroundColor(Color.argb(50,10,10,10));
         }else{
             waitMessage.setVisibility(TextView.INVISIBLE);
+            partner.setBackgroundColor(Color.argb(255,255,255,255));
         }
+    }
 
+    public void applyCopiedLinkOnStart() {
+        if(!clipboard.hasPrimaryClip())
+            return;
+        ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
+        user.setPartner_id(item.getText().toString());
+        if (user.getPartner_id() != null) {
+            if (user.getPartner_id().length() == 9) {
+                if (!user.getPartner_id().equals(user.getId())) {
+                    EditText idPartner = findViewById(R.id.companionID);
+                    idPartner.setText(user.getPartner_id());
+                    idPartner.setSelection(user.getPartner_id().length());
+                }
+            }
+        }
+        setPartner();
     }
 
     public String generateId(){
@@ -116,12 +183,12 @@ public class LinkActivity extends AppCompatActivity {
         return sb.toString();
     }
 
-    public void createId(){
+    public String createId(){
         String id;
         do {
             id = generateId();
-        }while(!db.exist(id));
+//        }while(!db.exist("user", id));
+        }while(false);
+        return id;
     }
-
-
 }

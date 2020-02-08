@@ -43,7 +43,7 @@ public class Locations extends Service {
         public void handleMessage(Message msg) {
             // Normally we would do some work here, like download a file.
             // For our sample, we just sleep for 5 seconds.
-            final int delay = 10000; //milliseconds
+            final int delay = 30000; //milliseconds
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable(){
                 public void run(){
@@ -54,7 +54,7 @@ public class Locations extends Service {
                                 public void onSuccess(LocationResponse locationResponse) {
                                     android.location.Location loc = locationResponse.getLocation();
 //                                    System.out.println("Alt :"+loc.getAltitude() +" Lat : "+loc.getLatitude()+ " Long :"+ loc.getLongitude());
-                                    DatabaseProvider.addDataLocation(context,"notifications","", loc.getLatitude(),loc.getLongitude(),loc.getAltitude());
+                                    DatabaseProvider.addDataLocation(context,"notifications", loc.getLatitude(),loc.getLongitude(),loc.getAltitude());
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {

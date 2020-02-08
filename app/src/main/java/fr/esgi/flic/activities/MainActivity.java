@@ -1,6 +1,14 @@
 package fr.esgi.flic.activities;
 
 
+import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -25,7 +33,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-
 public class MainActivity extends AppCompatActivity {
     final static private String TAG = "AndroidMainActivity";
 
@@ -41,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
+        super.onStart();
         if (ContextCompat.checkSelfPermission(
                 MainActivity.this,
                 Manifest.permission.ACCESS_FINE_LOCATION) !=
@@ -52,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
             );
             return;
         }
-        super.onStart();
     }
 
     private void createNotificationChannel() {
@@ -64,11 +71,14 @@ public class MainActivity extends AppCompatActivity {
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel headphoneChannel = new NotificationChannel(this.getResources().getString(R.string.HEADPHONE_CHANNEL), name, importance);
             NotificationChannel localisationChannel = new NotificationChannel(this.getResources().getString(R.string.LOCALISATION_CHANNEL), name, importance);
+            NotificationChannel stateChannel = new NotificationChannel(this.getResources().getString(R.string.STATE_CHANNEL), name, importance);
             headphoneChannel.setDescription(description);
             localisationChannel.setDescription(description);
+            stateChannel.setDescription(description);
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(headphoneChannel);
             notificationManager.createNotificationChannel(localisationChannel);
+            notificationManager.createNotificationChannel(stateChannel);
 
 
         }
@@ -76,8 +86,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void callAllIntent(){
-        Intent connection = new Intent(this, LinkActivity.class);
-        startActivity(connection);
         Intent localisation = new Intent(this, Locations.class);
         startService(localisation);
         Intent headphone = new Intent(this, HeadPhone.class);
