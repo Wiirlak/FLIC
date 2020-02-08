@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         createNotificationChannel();
         setContentView(R.layout.activity_main);
         callAllIntent();
+
+        listenForLogout();
     }
 
 
@@ -68,26 +70,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        User user = SPHelper.getSavedUserFromPreference(getApplicationContext(), User.class);
-
-        database.collection("user")
-                .whereEqualTo("user", user.getPartner_id())
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.w(TAG, "Listen failed.", e);
-                            return;
-                        }
-
-                        if(queryDocumentSnapshots.getDocuments().size() > 0) {
-                            if(queryDocumentSnapshots.getDocuments().get(0).get("partner_id") == null) {
-                                unlinkUser();
-                            }
-                        }
-                    }
-                });
     }
 
     private void createNotificationChannel() {
@@ -168,5 +150,28 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(this, LinkActivity.class);
         startActivity(i);
         finish();
+    }
+
+    public void listenForLogout() {
+        User user = SPHelper.getSavedUserFromPreference(getApplicationContext(), User.class);
+
+        database.collection("user")
+                .whereEqualTo("user", user.getPartner_id())
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(TAG, "Listen failed.", e);
+                            return;
+                        }
+
+                        Log.d(TAG, "LISTENER APPELE !!");
+                        if(queryDocumentSnapshots.getDocuments().size() > 0) {
+                            if(queryDocumentSnapshots.getDocuments().get(0).get("partner_id") == null) {
+                                unlinkUser();
+                            }
+                        }
+                    }
+                });
     }
 }
