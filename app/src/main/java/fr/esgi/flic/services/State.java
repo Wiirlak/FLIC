@@ -51,7 +51,6 @@ public class State extends Service {
         public void handleMessage(Message msg) {
             // Normally we would do some work here, like download a file.
             // For our sample, we just sleep for 5 seconds.
-            System.out.println("ok boomer");
             final int delay = 22000; //milliseconds
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable(){
@@ -71,35 +70,15 @@ public class State extends Service {
                                         DatabaseProvider.addDataState(context,"notifications", StateUtils.returnStateToString(probableActivity.getType()));
 
                                     }else{
-                                        //Log.i("NOKLeee", probableActivity.toString());
+                                        Log.i("NOKLeee", probableActivity.toString());
                                     }
                                 }else{
-                                    //Log.i("NOKLaa", probableActivity.toString());
+                                    Log.i("NOKLaa", probableActivity.toString());
                                 }
                             })
                             .addOnFailureListener(e -> System.out.println("Could not get state: " + e));
 
-                            /*
-                            .setResultCallback(detectedActivityResult -> {
-                                if (!detectedActivityResult.getStatus().isSuccess()) {
-                                    Log.e("NOKL", "Could not get the current activity.");
-                                    return;
-                                }
-                                ActivityRecognitionResult ar = detectedActivityResult.getActivityRecognitionResult();
-                                DetectedActivity probableActivity = ar.getMostProbableActivity();
-                                if(probableActivity.getType() != 4){// UNKNOWN
-                                    if(probableActivity.getConfidence() >= 50){
-//                                        Log.i("NOKL", StateUtils.returnStateToString(probableActivity.getType()));
-                                        DatabaseProvider.addDataState(context,"notifications", StateUtils.returnStateToString(probableActivity.getType()));
-
-                                    }else{
-                                        //Log.i("NOKLeee", probableActivity.toString());
-                                    }
-                                }else{
-                                    //Log.i("NOKLaa", probableActivity.toString());
-                                }
-                            });
-                    handler.postDelayed(this, delay);*/
+                    handler.postDelayed(this, delay);
                 }
             }, delay);
             // Stop the service using the startId, so that we don't stop
