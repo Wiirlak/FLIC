@@ -66,7 +66,6 @@ public class Database extends Service {
                                 if (task.isSuccessful()) {
                                     DocumentSnapshot document = task.getResult();
                                     if (document.exists()) {
-                                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                                         Query query = db.collection("notifications")
                                                 .whereEqualTo("user_id", docRef)
                                                 .orderBy("date", Query.Direction.DESCENDING)

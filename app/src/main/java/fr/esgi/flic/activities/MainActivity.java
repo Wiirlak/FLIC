@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -155,23 +157,18 @@ public class MainActivity extends AppCompatActivity {
     public void listenForLogout() {
         User user = SPHelper.getSavedUserFromPreference(getApplicationContext(), User.class);
 
-        database.collection("user")
-                .whereEqualTo("user", user.getPartner_id())
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.w(TAG, "Listen failed.", e);
-                            return;
-                        }
-
-                        Log.d(TAG, "LISTENER APPELE !!");
-                        if(queryDocumentSnapshots.getDocuments().size() > 0) {
-                            if(queryDocumentSnapshots.getDocuments().get(0).get("partner_id") == null) {
-                                unlinkUser();
-                            }
-                        }
-                    }
-                });
+        if(user.getPartner_id() == null || user.getPartner_id().equals(""))
+            return;
+        final DocumentReference docRef = database.collection("user").document(user.getPartner_id());
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (snapshot != null && snapshot.exists()) {
+                    if(snapshot.get("partner_id") == null)
+                        unlinkUser();
+                }
+            }
+        });
     }
 }
