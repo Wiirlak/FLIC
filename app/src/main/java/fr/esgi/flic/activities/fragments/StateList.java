@@ -60,15 +60,17 @@ public class StateList extends Fragment {
 
                         list.setText("");
                         if(!queryDocumentSnapshots.isEmpty()) {
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    for (int i = 0; i < Tools.min(queryDocumentSnapshots.getDocuments().size(), 3); i++) {
-                                        list.setText(list.getText() + "\n" + Tools.stateSwitch(queryDocumentSnapshots.getDocuments().get(i).get("value").toString()) + DateFormat.format(" le dd/MM/yyyy à HH:mm:ss", queryDocumentSnapshots.getDocuments().get(i).getDate("date")));
-                                    }
+                            if(getActivity() != null) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        for (int i = 0; i < Tools.min(queryDocumentSnapshots.getDocuments().size(), 3); i++) {
+                                            list.setText(list.getText() + "\n" + Tools.stateSwitch(queryDocumentSnapshots.getDocuments().get(i).get("value").toString()) + DateFormat.format(" le dd/MM/yyyy à HH:mm:ss", queryDocumentSnapshots.getDocuments().get(i).getDate("date")));
+                                        }
 
-                                }
-                            });
+                                    }
+                                });
+                            }
                         }
 
                     }
