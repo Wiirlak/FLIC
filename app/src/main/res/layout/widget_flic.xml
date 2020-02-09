@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:gravity="center"
-        android:text="Dernière notification reçue"
+        android:text="Aucune dernière notification"
         android:textStyle="bold" />
 
     <TextView
@@ -20,7 +20,6 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:gravity="center"
-        android:text="latest_notification_title"
         android:textStyle="bold" />
 
     <TextView
@@ -30,6 +29,5 @@
         android:autoLink="web"
         android:gravity="center"
         android:linksClickable="true"
-        android:text="latest_notification_value"
         android:textStyle="bold" />
 </LinearLayout>

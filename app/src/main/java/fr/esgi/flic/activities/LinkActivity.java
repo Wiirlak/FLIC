@@ -12,11 +12,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.Random;
 
@@ -110,7 +113,7 @@ public class LinkActivity extends AppCompatActivity {
                     if (task.isSuccessful()){
                         DocumentSnapshot document = task.getResult();
                         if(document != null)
-                            if(document.get("partner_id") != null || document.get("partner_id").equals("")) {
+                            if(document.get("partner_id") != null && !document.get("partner_id").equals("")) {
                                 if (!document.get("partner_id").equals(user.getId())) {
                                     user.setPartner_id(document.get("partner_id").toString());
                                     SPHelper.saveUserToSharedPreference(getApplicationContext(), user);

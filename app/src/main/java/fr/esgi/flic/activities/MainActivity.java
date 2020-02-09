@@ -155,6 +155,8 @@ public class MainActivity extends AppCompatActivity {
     public void unlinkUser() {
         User user = SPHelper.getSavedUserFromPreference(getApplicationContext(), User.class);
 
+        if(user == null)
+            return;
         db.post("user", user.getPartner_id(), "partner_id", null);
         user.setPartner_id(null);
         db.post("user", user.getId(), user);
