@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -44,10 +45,11 @@ public class LocalisationList extends Fragment {
 
         TextView list = (TextView) view.findViewById(R.id.notification_list);
         User user = SPHelper.getSavedUserFromPreference(getContext(), User.class);
+        final DocumentReference docRef = db.collection("user").document(user.getPartner_id());
 
         db.collection("notifications")
                 .whereEqualTo("type", "localisation")
-                .whereEqualTo("user_id", user.getPartner_id())
+                .whereEqualTo("user_id", docRef)
                 .orderBy("date", Query.Direction.DESCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @SuppressLint("ResourceType")
@@ -64,7 +66,7 @@ public class LocalisationList extends Fragment {
                                 @Override
                                 public void run() {
                                     for (int i = 0; i < Tools.min(queryDocumentSnapshots.getDocuments().size(), 50); i++) {
-                                        list.setText(list.getText() + "\n" + Tools.getLocalisationURL(queryDocumentSnapshots.getDocuments().get(i).get("value").toString()) + DateFormat.format(" le dd/MM/yyyy à hh:mm:ss", queryDocumentSnapshots.getDocuments().get(i).getDate("date")));
+                                        list.setText(list.getText() + "\n" + Tools.getLocalisationURL(queryDocumentSnapshots.getDocuments().get(i).get("value").toString()) + DateFormat.format(" le dd/MM/yyyy à HH:mm:ss", queryDocumentSnapshots.getDocuments().get(i).getDate("date")));
                                     }
 
                                 }

@@ -57,7 +57,7 @@ public class WidgetProvider extends AppWidgetProvider {
         final CollectionReference notifications = db.collection("notifications");
 
         db.collection("notifications")
-                .whereEqualTo("user_id", coupled_id.getPartner_id())
+                .whereEqualTo("user_id", docRef)
                 .orderBy("date", Query.Direction.DESCENDING)
                 .limit(1)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -69,7 +69,7 @@ public class WidgetProvider extends AppWidgetProvider {
                         }
 
                         if(queryDocumentSnapshots.getDocuments().size() > 0) {
-                            views.setTextViewText(R.id.widget_description, "Dernière notification reçue" + DateFormat.format(" le dd/MM/yyyy à hh:mm:ss", queryDocumentSnapshots.getDocuments().get(0).getDate("date")) + " :");
+                            views.setTextViewText(R.id.widget_description, "Dernière notification reçue" + DateFormat.format(" le dd/MM/yyyy à HH:mm:ss", queryDocumentSnapshots.getDocuments().get(0).getDate("date")) + " :");
                             views.setTextViewText(R.id.notif_title, Tools.titleSwitch(queryDocumentSnapshots.getDocuments().get(0).get("type").toString()));
                             views.setTextViewText(R.id.notif_value, Tools.notificationSwitch(queryDocumentSnapshots.getDocuments().get(0).get("type").toString(), queryDocumentSnapshots.getDocuments().get(0).get("value").toString()));
 
