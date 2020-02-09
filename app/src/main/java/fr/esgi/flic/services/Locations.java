@@ -12,11 +12,7 @@ import android.os.Message;
 import android.widget.Toast;
 
 import com.google.android.gms.awareness.Awareness;
-import com.google.android.gms.awareness.snapshot.LocationResponse;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 
-import androidx.annotation.NonNull;
 import fr.esgi.flic.provider.DatabaseProvider;
 
 public class Locations extends Service {
@@ -43,26 +39,18 @@ public class Locations extends Service {
         public void handleMessage(Message msg) {
             // Normally we would do some work here, like download a file.
             // For our sample, we just sleep for 5 seconds.
-            final int delay = 10000; //milliseconds
+            final int delay = 30000; //milliseconds
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable(){
                 public void run(){
                     //do something
                     Awareness.getSnapshotClient(Locations.this).getLocation()
-                            .addOnSuccessListener(new OnSuccessListener<LocationResponse>() {
-                                @Override
-                                public void onSuccess(LocationResponse locationResponse) {
-                                    android.location.Location loc = locationResponse.getLocation();
+                            .addOnSuccessListener(locationResponse -> {
+                                android.location.Location loc = locationResponse.getLocation();
 //                                    System.out.println("Alt :"+loc.getAltitude() +" Lat : "+loc.getLatitude()+ " Long :"+ loc.getLongitude());
-                                    DatabaseProvider.addDataLocation(context,"notifications","", loc.getLatitude(),loc.getLongitude(),loc.getAltitude());
-                                }
+                                DatabaseProvider.addDataLocation(context,"notifications", loc.getLatitude(),loc.getLongitude(),loc.getAltitude());
                             })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    System.out.println("Could not get Location state: " + e);
-                                }
-                            });
+                            .addOnFailureListener(e -> System.out.println("Could not get Localisation state: " + e));
                     handler.postDelayed(this, delay);
                 }
             }, delay);

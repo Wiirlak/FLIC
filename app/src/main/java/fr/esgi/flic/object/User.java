@@ -58,6 +58,7 @@ public class User {
     }
 
     public void setPartner_id(String partner_id) {
-        this.partner_id = partner_id;
+        if(!partner_id.equals(""))
+            this.partner_id = partner_id;
     }
 }

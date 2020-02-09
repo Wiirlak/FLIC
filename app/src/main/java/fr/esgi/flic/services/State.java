@@ -22,7 +22,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import androidx.annotation.NonNull;
+import fr.esgi.flic.provider.DatabaseProvider;
+import fr.esgi.flic.utils.StateUtils;
 
+@SuppressWarnings("deprecation")
 public class State extends Service {
 
     public static Context context;
@@ -48,7 +51,7 @@ public class State extends Service {
         public void handleMessage(Message msg) {
             // Normally we would do some work here, like download a file.
             // For our sample, we just sleep for 5 seconds.
-            final int delay = 10000; //milliseconds
+            final int delay = 22000; //milliseconds
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable(){
                 public void run(){
@@ -57,16 +60,24 @@ public class State extends Service {
                             .addApi(Awareness.API)
                             .build();
                     mGoogleApiClient.connect();
-                    Awareness.SnapshotApi.getDetectedActivity(mGoogleApiClient)
-                            .setResultCallback(detectedActivityResult -> {
-                                if (!detectedActivityResult.getStatus().isSuccess()) {
-                                    Log.e("NOKL", "Could not get the current activity.");
-                                    return;
-                                }
+                    Awareness.getSnapshotClient(State.context).getDetectedActivity()
+                            .addOnSuccessListener(detectedActivityResult -> {
                                 ActivityRecognitionResult ar = detectedActivityResult.getActivityRecognitionResult();
                                 DetectedActivity probableActivity = ar.getMostProbableActivity();
-                                Log.i("NOKL", probableActivity.toString());
-                            });
+                                if(probableActivity.getType() != 4){// UNKNOWN
+                                    if(probableActivity.getConfidence() >= 50){
+//                                        Log.i("NOKL", StateUtils.returnStateToString(probableActivity.getType()));
+                                        DatabaseProvider.addDataState(context,"notifications", StateUtils.returnStateToString(probableActivity.getType()));
+
+                                    }else{
+//                                        Log.i("NOKLeee", probableActivity.toString());
+                                    }
+                                }else{
+//                                    Log.i("NOKLaa", probableActivity.toString());
+                                }
+                            })
+                            .addOnFailureListener(e -> System.out.println("Could not get state: " + e));
+
                     handler.postDelayed(this, delay);
                 }
             }, delay);
@@ -83,12 +94,12 @@ public class State extends Service {
         // main thread, which we don't want to block. We also make it
         // background priority so CPU-intensive work doesn't disrupt our UI.
         HandlerThread thread = new HandlerThread("ServiceStartArguments",
-                50);
+                56);
         thread.start();
 
         // Get the HandlerThread's Looper and use it for our Handler
         serviceLooper = thread.getLooper();
-        serviceHandler = new ServiceHandler(serviceLooper);
+        serviceHandler = new State.ServiceHandler (serviceLooper);
     }
 
     @Override

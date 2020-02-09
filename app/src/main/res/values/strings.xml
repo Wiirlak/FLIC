@@ -5,15 +5,6 @@
 
     <string name="_notification_title_template">: %1$s</string>
 
-    <!-- TODO: remove this placeholder text -->
-    <string name="_notification_placeholder_text_template">You said %1$s and lorem ipsum dolor sit
-        amet, consectetur adipiscing elit. Etiam non enim magna. Morbi dictum, velit vel semper
-        venenatis, magna odio volutpat velit, at ullamcorper nulla lacus sed turpis. Pellentesque
-        vitae metus elit, nec tincidunt tellus. Integer sed nisl sem, ullamcorper ornare lacus. Duis
-        ac mauris sed massa congue volutpat. Donec sed erat sit amet turpis viverra rhoncus sit amet
-        nec magna. Donec lacinia ligula at libero volutpat volutpat nec nec tortor.
-    </string>
-
     <string name="action_share">Share</string>
     <string name="action_reply">Reply</string>
     <string name="channel_name">texte</string>
@@ -23,7 +14,11 @@
     <string name="HEADPHONE_TEXT">headphone</string>
     <string name="HEADPHONE_CHANNEL">81</string>
 
-    <string name="LOCALISATION_NOTIF">82</string>
+    <string name="STATE_NOTIF">82</string>
+    <string name="STATE_TEXT">state</string>
+    <string name="STATE_CHANNEL">82</string>
+
+    <string name="LOCALISATION_NOTIF">83</string>
     <string name="LOCALISATION_TEXT">localisation</string>
-    <string name="LOCALISATION_CHANNEL">82</string>
+    <string name="LOCALISATION_CHANNEL">83</string>
 </resources>

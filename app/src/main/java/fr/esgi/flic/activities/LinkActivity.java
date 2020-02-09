@@ -12,14 +12,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.Random;
 
@@ -50,8 +47,8 @@ public class LinkActivity extends AppCompatActivity {
             db.post("user", user.getId(), user);
         }else{
             TextView partner = findViewById(R.id.companionID);
-            partner.setText(user.getPartner_id());
-            listenPartner();
+            partner.setText(user.getPartner_id()==null?"":user.getPartner_id());
+            updateSPFromFB();
         }
 
         TextView idUser = findViewById(R.id.personnalID);
@@ -75,9 +72,7 @@ public class LinkActivity extends AppCompatActivity {
         waitingMessage(false);
     }
 
-    public void setPartner(View view) {
-        setPartner();
-    }
+    public void setPartner(View view) { setPartner(); }
     public void setPartner() {
         TextView partner = findViewById(R.id.companionID);
         user.setPartner_id(partner.getText().toString());
@@ -85,13 +80,17 @@ public class LinkActivity extends AppCompatActivity {
         SPHelper.saveUserToSharedPreference(getApplicationContext(), user);
 
 //        Toast.makeText(getApplicationContext(), "id envoyé", Toast.LENGTH_SHORT).show();
-        waitingMessage(true);
-        listenPartner();
+        if(partner.getText() != null) {
+            waitingMessage(true);
+            listenPartner();
+        }
 
     }
 
     public void listenPartner() {
-        final DocumentReference docRef = dbf.collection("user").document(user.partner_id);
+        if(user.getPartner_id() == null || user.getPartner_id().equals(""))
+            return;
+        final DocumentReference docRef = dbf.collection("user").document(user.getPartner_id());
         docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot snapshot,
@@ -103,16 +102,42 @@ public class LinkActivity extends AppCompatActivity {
         });
     }
 
-    public void checkLink(){
+    public void updateSPFromFB(){
         dbf.collection("user")
-                .document(user.partner_id)
+                .document(user.getId())
                 .get()
                 .addOnCompleteListener((task) -> {
                     if (task.isSuccessful()){
                         DocumentSnapshot document = task.getResult();
                         if(document != null)
-                            if(document.get("partner_id").equals(user.getId()))
-                                gotoMain();
+                            if(document.get("partner_id") != null || document.get("partner_id").equals("")) {
+                                if (!document.get("partner_id").equals(user.getId())) {
+                                    user.setPartner_id(document.get("partner_id").toString());
+                                    SPHelper.saveUserToSharedPreference(getApplicationContext(), user);
+                                    TextView partner = findViewById(R.id.companionID);
+                                    partner.setText(user.getPartner_id());
+                                    listenPartner();
+                                }else{
+                                    gotoMain();
+                                }
+                            }
+                    }
+                });
+    }
+
+    public void checkLink(){
+        if(user.getPartner_id() == null)
+            return;
+        dbf.collection("user")
+                .document(user.getPartner_id())
+                .get()
+                .addOnCompleteListener((task) -> {
+                    if (task.isSuccessful()){
+                        DocumentSnapshot document = task.getResult();
+                        if(document != null)
+                            if(document.get("partner_id") != null)
+                                if(document.get("partner_id").equals(user.getId()))
+                                    gotoMain();
                     }
                 });
     }
@@ -120,6 +145,7 @@ public class LinkActivity extends AppCompatActivity {
     public void gotoMain(){
         Intent main = new Intent(this, MainActivity.class);
         startActivity(main);
+        finish();
     }
 
     public void waitingMessage(boolean v) {
@@ -138,14 +164,14 @@ public class LinkActivity extends AppCompatActivity {
         if(!clipboard.hasPrimaryClip())
             return;
         ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
+        if(item.getText().toString().length() != 9)
+            return;
         user.setPartner_id(item.getText().toString());
         if (user.getPartner_id() != null) {
-            if (user.getPartner_id().length() == 9) {
-                if (!user.getPartner_id().equals(user.getId())) {
-                    EditText idPartner = findViewById(R.id.companionID);
-                    idPartner.setText(user.getPartner_id());
-                    idPartner.setSelection(user.getPartner_id().length());
-                }
+            if (!user.getPartner_id().equals(user.getId())) {
+                EditText idPartner = findViewById(R.id.companionID);
+                idPartner.setText(user.getPartner_id());
+                idPartner.setSelection(user.getPartner_id().length());
             }
         }
         setPartner();
@@ -169,6 +195,4 @@ public class LinkActivity extends AppCompatActivity {
         }while(false);
         return id;
     }
-
-
 }

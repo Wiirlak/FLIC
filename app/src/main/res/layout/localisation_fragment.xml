@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_blue_square"
+    android:gravity="center"
+    android:textAlignment="center"
+    tools:context=".activities.fragments.Localisation">
+
+    <TextView
+        android:id="@+id/latest_localisations_notifications"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:autoLink="web"
+        android:gravity="center"
+        android:visibility="invisible"
+        android:text="Appuyez ici pour obtenir les dernières localisations" />
+
+    <ImageView
+        android:id="@+id/localisation_icon"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"
+        android:maxWidth="42dp"
+        android:maxHeight="42dp"
+        android:src="@drawable/picto_position" />
+
+</FrameLayout>

@@ -44,31 +44,23 @@ public class HeadPhone extends Service {
         public void handleMessage(Message msg) {
             // Normally we would do some work here, like download a file.
             // For our sample, we just sleep for 5 seconds.
-            final int delay = 8000; //milliseconds
+            final int delay = 25000; //milliseconds
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable(){
                 @Override
                 public void run(){
                     //do something
                     Awareness.getSnapshotClient(context).getHeadphoneState()
-                            .addOnSuccessListener(new OnSuccessListener<HeadphoneStateResponse>() {
-                                @Override
-                                public void onSuccess(HeadphoneStateResponse headphoneStateResponse) {
-                                    HeadphoneState headphoneState = headphoneStateResponse.getHeadphoneState();
-                                    boolean pluggedIn = headphoneState.getState() == HeadphoneState.PLUGGED_IN;
+                            .addOnSuccessListener(headphoneStateResponse -> {
+                                HeadphoneState headphoneState = headphoneStateResponse.getHeadphoneState();
+                                boolean pluggedIn = headphoneState.getState() == HeadphoneState.PLUGGED_IN;
 //                                    String stateStr =
 //                                            "Headphones are " + (pluggedIn ? "plugged in" : "unplugged");
 //                                    System.out.println(stateStr);
-                                    DatabaseProvider.addDataHeadphone(context,"notifications","", pluggedIn);
+                                DatabaseProvider.addDataHeadphone(context,"notifications", pluggedIn);
 
-                                }
                             })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    System.out.println("Could not get headphone state: " + e);
-                                }
-                            });
+                            .addOnFailureListener(e -> System.out.println("Could not get headphone state: " + e));
                     handler.postDelayed(this, delay);
                 }
             }, delay);
@@ -85,7 +77,7 @@ public class HeadPhone extends Service {
         // main thread, which we don't want to block. We also make it
         // background priority so CPU-intensive work doesn't disrupt our UI.
         HandlerThread thread = new HandlerThread("ServiceStartArguments",
-                50);
+                48);
         thread.start();
 
         // Get the HandlerThread's Looper and use it for our Handler
