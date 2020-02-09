@@ -47,7 +47,7 @@ public class LinkActivity extends AppCompatActivity {
             db.post("user", user.getId(), user);
         }else{
             TextView partner = findViewById(R.id.companionID);
-            partner.setText(user.getPartner_id());
+            partner.setText(user.getPartner_id()==null?"":user.getPartner_id());
             updateSPFromFB();
         }
 
@@ -88,13 +88,16 @@ public class LinkActivity extends AppCompatActivity {
     }
 
     public void listenPartner() {
-        if(user.getPartner_id() == null || user.getPartner_id().equals("")) {
+        if(user.getPartner_id() == null || user.getPartner_id().equals(""))
             return;
-        }
-        final DocumentReference docRef = dbf.collection("user").document(user.partner_id);
-        docRef.addSnapshotListener((snapshot, e) -> {
-            if (snapshot != null && snapshot.exists()) {
-                checkLink();
+        final DocumentReference docRef = dbf.collection("user").document(user.getPartner_id());
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (snapshot != null && snapshot.exists()) {
+                    checkLink();
+                }
             }
         });
     }
@@ -123,15 +126,18 @@ public class LinkActivity extends AppCompatActivity {
     }
 
     public void checkLink(){
+        if(user.getPartner_id() == null)
+            return;
         dbf.collection("user")
-                .document(user.partner_id)
+                .document(user.getPartner_id())
                 .get()
                 .addOnCompleteListener((task) -> {
                     if (task.isSuccessful()){
                         DocumentSnapshot document = task.getResult();
                         if(document != null)
-                            if(document.get("partner_id").equals(user.getId()))
-                                gotoMain();
+                            if(document.get("partner_id") != null)
+                                if(document.get("partner_id").equals(user.getId()))
+                                    gotoMain();
                     }
                 });
     }
@@ -139,6 +145,7 @@ public class LinkActivity extends AppCompatActivity {
     public void gotoMain(){
         Intent main = new Intent(this, MainActivity.class);
         startActivity(main);
+        finish();
     }
 
     public void waitingMessage(boolean v) {

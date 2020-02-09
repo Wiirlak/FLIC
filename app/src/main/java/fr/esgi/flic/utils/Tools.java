@@ -4,6 +4,33 @@ import android.util.Log;
 
 public class Tools {
 
+    public static String notificationSwitch(String type, String value) {
+        switch (type) {
+            case "headphone":
+                return headphoneSwitch(value);
+            case "localisation":
+                return getLocalisationURL(value);
+            case "state":
+                return stateSwitch(value);
+            default:
+                Log.d("Tools", "Type de notification inconnue");
+                return "Notification inconnue";
+        }
+    }
+
+    public static String titleSwitch(String title) {
+        switch (title) {
+            case "headphone":
+                return "Écouteurs";
+            case "localisation":
+                return "Emplacement";
+            case "state":
+                return "Type de mouvement";
+            default:
+                return "Type de notification inconnu";
+        }
+    }
+
     public static String stateSwitch(String value) {
 
         switch (value) {
@@ -41,9 +68,20 @@ public class Tools {
     }
 
     public static String getLocalisationURL(String value) {
+        if(value.length() < 29) {
+            Log.d("Tools", "Can't get localisation from value : string too short");
+            return "";
+        }
         String latitude = value.substring(4, 14);
         String longitude = value.substring(20, 29);
         // Log.d("getLocalisationURL", "https://www.google.com/maps/search/?api=1&query=" + latitude + "," + longitude);
         return "https://www.google.com/maps/search/?api=1&query=" + latitude + "," + longitude;
+    }
+
+    public static int min(int to_test, int min) {
+        if(to_test <= min)
+            return to_test;
+        else
+            return min;
     }
 }

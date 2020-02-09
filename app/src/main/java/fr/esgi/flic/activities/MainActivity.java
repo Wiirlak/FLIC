@@ -8,33 +8,38 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
+
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import fr.esgi.flic.R;
 import fr.esgi.flic.activities.fragments.HeadphoneList;
 import fr.esgi.flic.activities.fragments.LocalisationList;
 import fr.esgi.flic.activities.fragments.StateList;
+import fr.esgi.flic.object.User;
 import fr.esgi.flic.services.Database;
 import fr.esgi.flic.services.HeadPhone;
 import fr.esgi.flic.services.Locations;
 import fr.esgi.flic.services.State;
-
-import android.Manifest;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
+import fr.esgi.flic.utils.FirebaseHelper;
+import fr.esgi.flic.utils.SPHelper;
 
 public class MainActivity extends AppCompatActivity {
     final static private String TAG = "AndroidMainActivity";
+    FirebaseHelper db = new FirebaseHelper();
+    FirebaseFirestore database = FirebaseFirestore.getInstance();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
         createNotificationChannel();
         setContentView(R.layout.activity_main);
         callAllIntent();
+
+        listenForLogout();
     }
 
 
@@ -71,6 +78,11 @@ public class MainActivity extends AppCompatActivity {
             );
             return;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     private void createNotificationChannel() {
@@ -132,6 +144,42 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        findViewById(R.id.big_list_layout).setVisibility(View.INVISIBLE);
+        if(findViewById(R.id.big_list_layout) != null)
+            findViewById(R.id.big_list_layout).setVisibility(View.INVISIBLE);
+    }
+
+    public void unlinkUser(View view) {
+        unlinkUser();
+    }
+
+    public void unlinkUser() {
+        User user = SPHelper.getSavedUserFromPreference(getApplicationContext(), User.class);
+
+        db.post("user", user.getPartner_id(), "partner_id", null);
+        user.setPartner_id(null);
+        db.post("user", user.getId(), user);
+
+        SPHelper.saveUserToSharedPreference(getApplicationContext(), user);
+        Intent i = new Intent(this, LinkActivity.class);
+        startActivity(i);
+        finish();
+    }
+
+    public void listenForLogout() {
+        User user = SPHelper.getSavedUserFromPreference(getApplicationContext(), User.class);
+
+        if(user.getPartner_id() == null || user.getPartner_id().equals(""))
+            return;
+        final DocumentReference docRef = database.collection("user").document(user.getPartner_id());
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (snapshot != null && snapshot.exists()) {
+                    if(snapshot.get("partner_id") == null)
+                        unlinkUser();
+                }
+            }
+        });
     }
 }

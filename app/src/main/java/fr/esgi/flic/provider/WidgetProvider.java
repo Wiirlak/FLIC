@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -26,102 +27,54 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import fr.esgi.flic.R;
 import fr.esgi.flic.activities.MainActivity;
+import fr.esgi.flic.object.User;
+import fr.esgi.flic.utils.SPHelper;
+import fr.esgi.flic.utils.Tools;
+
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 
 public class WidgetProvider extends AppWidgetProvider {
 
     private static final String TAG = "AppWidgetProvider";
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    //FirebaseHelper fbHelper = new FirebaseHelper(); //TODO retirer les lignes de code pour tester avant de livrer
 
     @Override
     public void onEnabled(Context context) {
         Log.d(TAG, "onEnabled");
-        /*Task test = (Task) fbHelper.get("notifications", "type", "headphone");
-        test.addOnCompleteListener(new OnCompleteListener() {
-            @Override
-            public void onComplete(@NonNull Task task) {
-                if(task.isSuccessful()) {
-                    QuerySnapshot result = (QuerySnapshot) task.getResult();
-                    System.out.println("RESULT = " + result.getDocuments());
-                }
-            }
-        });*/
 
     }
 
     @Override
     public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
         final int N = appWidgetIds.length;
-        SharedPreferences prefs = context.getApplicationContext().getSharedPreferences("data", 0);
 
-        String coupled_id = prefs.getString("coupled_id", "senyuhG15nVVusKgX9ul"); //TODO remplacer avec une valeur id par défaut
+        User coupled_id = SPHelper.getSavedUserFromPreference(context, User.class);
         final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_flic);
 
-        final DocumentReference docRef = db.collection("user").document(coupled_id);
+        if(coupled_id.getPartner_id() == null || coupled_id.getPartner_id().equals(""))
+                return;
+        final DocumentReference docRef = db.collection("user").document(coupled_id.getPartner_id());
         final CollectionReference notifications = db.collection("notifications");
 
-
         db.collection("notifications")
-                .whereEqualTo("user_id", docRef)
+                .whereEqualTo("user_id", coupled_id.getPartner_id())
+                .orderBy("date", Query.Direction.DESCENDING)
+                .limit(1)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
-                    public void onEvent(@Nullable QuerySnapshot value,
-                                        @Nullable FirebaseFirestoreException e) {
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                         if (e != null) {
                             Log.w(TAG, "Listen failed.", e);
                             return;
                         }
 
-                        /*HashMap<Object, Object> notifs = new HashMap<Object, Object>();
-                        for (QueryDocumentSnapshot doc : value) {
-                            notifs.put(doc.get("type"), doc.get("value"));
+                        if(queryDocumentSnapshots.getDocuments().size() > 0) {
+                            views.setTextViewText(R.id.widget_description, "Dernière notification reçue" + DateFormat.format(" le dd/MM/yyyy à hh:mm:ss", queryDocumentSnapshots.getDocuments().get(0).getDate("date")) + " :");
+                            views.setTextViewText(R.id.notif_title, Tools.titleSwitch(queryDocumentSnapshots.getDocuments().get(0).get("type").toString()));
+                            views.setTextViewText(R.id.notif_value, Tools.notificationSwitch(queryDocumentSnapshots.getDocuments().get(0).get("type").toString(), queryDocumentSnapshots.getDocuments().get(0).get("value").toString()));
+
+                            appWidgetManager.updateAppWidget(appWidgetIds[0], views);
                         }
-                        Log.d(TAG, "Current notifications : " + notifs);*/
-
-                        Log.d(TAG, "getting latest notifications");
-                        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot document = task.getResult();
-                                    if (document.exists()) {
-                                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                        Query query = db.collection("notifications")
-                                                .whereEqualTo("user_id", docRef)
-                                                .orderBy("date", Query.Direction.DESCENDING)
-                                                .limit(1);
-                                        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                if (task.isSuccessful()) {
-                                                    QuerySnapshot document = task.getResult();
-                                                    if (!document.isEmpty()) {
-                                                        //Log.d(TAG, "QuerySnapshot data: " + document.getDocuments());
-                                                        Log.d(TAG, "LATEST NOTIF TITLE : " + document.getDocuments().get(0).get("type"));
-                                                        Log.d(TAG, "LATEST NOTIF VALUE : " + document.getDocuments().get(0).get("value"));
-
-                                                        views.setTextViewText(R.id.notif_title, document.getDocuments().get(0).get("type").toString());
-                                                        views.setTextViewText(R.id.notif_value, document.getDocuments().get(0).get("value").toString());
-
-                                                        appWidgetManager.updateAppWidget(appWidgetIds[0], views);
-
-                                                    } else {
-                                                        Log.d(TAG, "No such document");
-                                                    }
-                                                } else {
-                                                    Log.e(TAG, task.getException().getLocalizedMessage());
-                                                }
-                                            }
-                                        });
-                                    } else {
-                                        Log.d(TAG, "No such document");
-                                    }
-                                } else {
-                                    Log.d(TAG, "get failed with ", task.getException());
-                                }
-                            }
-                        });
-
                     }
                 });
 

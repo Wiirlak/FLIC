@@ -20,6 +20,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import fr.esgi.flic.R;
+import fr.esgi.flic.object.User;
+import fr.esgi.flic.utils.SPHelper;
 import fr.esgi.flic.utils.Tools;
 
 public class HeadphoneList extends Fragment {
@@ -40,9 +42,11 @@ public class HeadphoneList extends Fragment {
         title.setText("Liste des dernières utilisations des écouteurs : ");
 
         TextView list = (TextView) view.findViewById(R.id.notification_list);
+        User user = SPHelper.getSavedUserFromPreference(getContext(), User.class);
 
-        db.collection("notifications") // TODO ajouter condition user = id de l'utilisateur couplé
+        db.collection("notifications")
                 .whereEqualTo("type", "headphone")
+                .whereEqualTo("user_id", user.getPartner_id())
                 .orderBy("date", Query.Direction.DESCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @SuppressLint("ResourceType")
@@ -57,8 +61,8 @@ public class HeadphoneList extends Fragment {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    for (int i = 0; i < queryDocumentSnapshots.getDocuments().size(); i++) {
-                                        list.setText(list.getText() + "\n" + Tools.headphoneSwitch(queryDocumentSnapshots.getDocuments().get(i).get("value").toString()) + DateFormat.format(" le dd/MM/yyyy à hh:mm:ss", queryDocumentSnapshots.getDocuments().get(0).getDate("date")));
+                                    for (int i = 0; i < Tools.min(queryDocumentSnapshots.getDocuments().size(), 50); i++) {
+                                        list.setText(list.getText() + "\n" + Tools.headphoneSwitch(queryDocumentSnapshots.getDocuments().get(i).get("value").toString()) + DateFormat.format(" le dd/MM/yyyy à hh:mm:ss", queryDocumentSnapshots.getDocuments().get(i).getDate("date")));
                                     }
 
                                 }
