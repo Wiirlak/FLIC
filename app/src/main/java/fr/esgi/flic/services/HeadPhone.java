@@ -84,7 +84,7 @@ public class HeadPhone extends Service {
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    System.out.println("Could not get headphone state: " + e);
+                                    Log.e("Headphone service","Could not get headphone state: " + e);
                                 }
                             });
                     handler.postDelayed(this, delay);

@@ -3,6 +3,7 @@ package fr.esgi.flic.services;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
@@ -79,7 +80,7 @@ public class Locations extends Service {
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    System.out.println("Could not get Localisation state: " + e);
+                                    Log.e("Loclisation Service", "Could not get Localisation state: " + e);
                                 }
                             });
                     handler.postDelayed(this, delay);

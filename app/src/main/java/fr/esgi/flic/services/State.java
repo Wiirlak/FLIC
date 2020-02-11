@@ -88,7 +88,7 @@ public class State extends Service {
                                     Log.i("Unknown type", probableActivity.toString());
                                 }
                             })
-                            .addOnFailureListener(e -> System.out.println("Could not get state: " + e));
+                            .addOnFailureListener(e -> Log.e("State Service","Could not get state: " + e));
 
                     handler.postDelayed(this, delay);
                 }

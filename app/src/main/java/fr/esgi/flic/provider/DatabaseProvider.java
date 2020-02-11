@@ -30,7 +30,7 @@ public class DatabaseProvider {
         Map<String, Object> user = new HashMap<>();
         user.put("date", new Date());
         user.put("type", context.getResources().getString(R.string.LOCALISATION_TEXT));
-        user.put("user_id", docRef); // user_id
+        user.put("user_id", docRef);
         user.put("value", "lat:" + lat + ";long:" + longi + ";alt:" + alt);
 
         db.collection(table)
@@ -57,7 +57,7 @@ public class DatabaseProvider {
         Map<String, Object> user = new HashMap<>();
         user.put("date", new Date());
         user.put("type", context.getResources().getString(R.string.HEADPHONE_TEXT));
-        user.put("user_id", docRef); // user_id
+        user.put("user_id", docRef);
         user.put("value", plugged ? "Yes" : "No");
 
         db.collection(table)
@@ -84,7 +84,7 @@ public class DatabaseProvider {
         Map<String, Object> user = new HashMap<>();
         user.put("date", new Date());
         user.put("type", context.getResources().getString(R.string.STATE_TEXT));
-        user.put("user_id", docRef); // user_id
+        user.put("user_id", docRef);
         user.put("value", activity);
 
         db.collection(table)
