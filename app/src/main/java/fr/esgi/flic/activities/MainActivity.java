@@ -10,17 +10,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import fr.esgi.flic.R;
 import fr.esgi.flic.activities.fragments.HeadphoneList;
 import fr.esgi.flic.activities.fragments.LocalisationList;
@@ -92,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void callAllIntent(){
+    private void callAllIntent() {
         Intent localisation = new Intent(this, Locations.class);
         startService(localisation);
         Intent headphone = new Intent(this, HeadPhone.class);
@@ -106,21 +105,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showHeadphoneNotifList(View view) {
-        if(findViewById(R.id.placeholder_frame) != null) {
+        if (findViewById(R.id.placeholder_frame) != null) {
 
             getSupportFragmentManager().beginTransaction().replace(R.id.placeholder_frame, new HeadphoneList()).commit();
         }
     }
 
     public void showLocalisationNotifList(View view) {
-        if(findViewById(R.id.placeholder_frame) != null) {
+        if (findViewById(R.id.placeholder_frame) != null) {
 
             getSupportFragmentManager().beginTransaction().replace(R.id.placeholder_frame, new LocalisationList()).commit();
         }
     }
 
     public void showStateNotifList(View view) {
-        if(findViewById(R.id.placeholder_frame) != null) {
+        if (findViewById(R.id.placeholder_frame) != null) {
 
             getSupportFragmentManager().beginTransaction().replace(R.id.placeholder_frame, new StateList()).commit();
         }
@@ -128,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(findViewById(R.id.big_list_layout) != null)
+        if (findViewById(R.id.big_list_layout) != null)
             findViewById(R.id.big_list_layout).setVisibility(View.INVISIBLE);
     }
 
@@ -152,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
     public void listenForLogout() {
         User user = SPHelper.getSavedUserFromPreference(getApplicationContext(), User.class);
 
-        if(user.getPartner_id() == null || user.getPartner_id().equals(""))
+        if (user.getPartner_id() == null || user.getPartner_id().equals(""))
             return;
         final DocumentReference docRef = database.collection("user").document(user.getPartner_id());
         docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -160,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
             public void onEvent(@Nullable DocumentSnapshot snapshot,
                                 @Nullable FirebaseFirestoreException e) {
                 if (snapshot != null && snapshot.exists()) {
-                    if(snapshot.get("partner_id") == null)
+                    if (snapshot.get("partner_id") == null)
                         unlinkUser();
                 }
             }

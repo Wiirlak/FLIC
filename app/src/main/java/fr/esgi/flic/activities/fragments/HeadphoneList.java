@@ -9,10 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -20,6 +16,9 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import fr.esgi.flic.R;
 import fr.esgi.flic.object.User;
 import fr.esgi.flic.utils.SPHelper;
@@ -27,8 +26,8 @@ import fr.esgi.flic.utils.Tools;
 
 public class HeadphoneList extends Fragment {
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
     final private String TAG = "FragmentHeadphoneList";
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Nullable
     @Override
@@ -59,8 +58,8 @@ public class HeadphoneList extends Fragment {
                             return;
                         }
                         list.setText("");
-                        if(!queryDocumentSnapshots.isEmpty()) {
-                            if(getActivity() != null) {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            if (getActivity() != null) {
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {

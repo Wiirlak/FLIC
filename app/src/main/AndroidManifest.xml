@@ -51,14 +51,14 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.MainActivity">
-        </activity>
+        <activity android:name=".activities.MainActivity"></activity>
 
-        <receiver android:name=".provider.WidgetProvider" >
+        <receiver android:name=".provider.WidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
-            <meta-data android:name="android.appwidget.provider"
+            <meta-data
+                android:name="android.appwidget.provider"
                 android:resource="@xml/appwidget_provider" />
         </receiver>
     </application>

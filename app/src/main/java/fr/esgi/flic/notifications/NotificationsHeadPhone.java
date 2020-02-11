@@ -6,17 +6,17 @@ import android.content.Intent;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import fr.esgi.flic.activities.MainActivity;
 import fr.esgi.flic.R;
+import fr.esgi.flic.activities.MainActivity;
 
 public class NotificationsHeadPhone {
 
-    public static void sendNotification(Context context, String type, String value){
+    public static void sendNotification(Context context, String type, String value) {
 
         Intent intent = new Intent(context, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context,context.getResources().getString(R.string.HEADPHONE_CHANNEL) )
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, context.getResources().getString(R.string.HEADPHONE_CHANNEL))
                 .setSmallIcon(R.drawable.flic_minimal_nofill)
                 .setContentTitle(type)
                 .setContentText(value)
@@ -24,6 +24,6 @@ public class NotificationsHeadPhone {
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(R.string.HEADPHONE_NOTIF,builder.build());
+        notificationManager.notify(R.string.HEADPHONE_NOTIF, builder.build());
     }
 }

@@ -18,17 +18,17 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import fr.esgi.flic.R;
 import fr.esgi.flic.notifications.NotificationsHeadPhone;
 import fr.esgi.flic.notifications.NotificationsLocalisation;
-import fr.esgi.flic.R;
 import fr.esgi.flic.notifications.NotificationsState;
 import fr.esgi.flic.object.User;
 import fr.esgi.flic.utils.SPHelper;
 
 public class Database extends Service {
     private static final String TAG = "DatabaseService";
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final Context context = this;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public Database() {
     }
@@ -72,12 +72,12 @@ public class Database extends Service {
                                                     QuerySnapshot document = task.getResult();
                                                     if (!document.isEmpty()) {
                                                         String type = document.getDocuments().get(0).get("type").toString();
-                                                        if(type.equals(context.getResources().getString(R.string.HEADPHONE_TEXT))) {
-                                                            NotificationsHeadPhone.sendNotification(context,type,document.getDocuments().get(0).get("value").toString());
-                                                        }else if(type.equals(context.getResources().getString(R.string.LOCALISATION_TEXT))) {
-                                                            NotificationsLocalisation.sendNotification(context,type,document.getDocuments().get(0).get("value").toString());
-                                                        }else if(type.equals(context.getResources().getString(R.string.STATE_TEXT))) {
-                                                            NotificationsState.sendNotification(context,type,document.getDocuments().get(0).get("value").toString());
+                                                        if (type.equals(context.getResources().getString(R.string.HEADPHONE_TEXT))) {
+                                                            NotificationsHeadPhone.sendNotification(context, type, document.getDocuments().get(0).get("value").toString());
+                                                        } else if (type.equals(context.getResources().getString(R.string.LOCALISATION_TEXT))) {
+                                                            NotificationsLocalisation.sendNotification(context, type, document.getDocuments().get(0).get("value").toString());
+                                                        } else if (type.equals(context.getResources().getString(R.string.STATE_TEXT))) {
+                                                            NotificationsState.sendNotification(context, type, document.getDocuments().get(0).get("value").toString());
                                                         }
 
                                                     } else {

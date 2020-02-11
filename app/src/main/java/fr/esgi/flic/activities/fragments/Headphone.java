@@ -1,21 +1,12 @@
 package fr.esgi.flic.activities.fragments;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.RemoteViews;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -23,25 +14,18 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Locale;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import fr.esgi.flic.R;
 import fr.esgi.flic.object.User;
 import fr.esgi.flic.utils.SPHelper;
 import fr.esgi.flic.utils.Tools;
 
-import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
-
 public class Headphone extends Fragment {
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
     final private String TAG = "FragmentHeadphone";
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Nullable
     @Override
@@ -70,7 +54,7 @@ public class Headphone extends Fragment {
                         }
 
                         tv.setText("Appuyez ici pour avoir les états des écouteurs");
-                        if(!queryDocumentSnapshots.isEmpty()) {
+                        if (!queryDocumentSnapshots.isEmpty()) {
                             getActivity().runOnUiThread(new Runnable() {
 
 

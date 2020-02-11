@@ -9,7 +9,6 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.awareness.Awareness;
 import com.google.android.gms.awareness.snapshot.HeadphoneStateResponse;
@@ -23,6 +22,9 @@ import fr.esgi.flic.provider.DatabaseProvider;
 public class HeadPhone extends Service {
 
     public static Context context;
+    private Looper serviceLooper;
+    private ServiceHandler serviceHandler;
+
     public HeadPhone() {
         context = this;
     }
@@ -30,43 +32,6 @@ public class HeadPhone extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
-    }
-
-    private Looper serviceLooper;
-    private ServiceHandler serviceHandler;
-
-    private final class ServiceHandler extends Handler {
-        public ServiceHandler(Looper looper) {
-            super(looper);
-        }
-        @Override
-        public void handleMessage(Message msg) {
-            final int delay = 25000;
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable(){
-                @Override
-                public void run(){
-                    Awareness.getSnapshotClient(context).getHeadphoneState()
-                            .addOnSuccessListener(new OnSuccessListener<HeadphoneStateResponse>() {
-                                @Override
-                                public void onSuccess(HeadphoneStateResponse headphoneStateResponse) {
-                                    HeadphoneState headphoneState = headphoneStateResponse.getHeadphoneState();
-                                    boolean pluggedIn = headphoneState.getState() == HeadphoneState.PLUGGED_IN;
-                                    DatabaseProvider.addDataHeadphone(context,"notifications", pluggedIn);
-
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    System.out.println("Could not get headphone state: " + e);
-                                }
-                            });
-                    handler.postDelayed(this, delay);
-                }
-            }, delay);
-            stopSelf(msg.arg1);
-        }
     }
 
     @Override
@@ -92,5 +57,40 @@ public class HeadPhone extends Service {
     public void onDestroy() {
         Log.i("Headphone service :", "Headphone done");
 
+    }
+
+    private final class ServiceHandler extends Handler {
+        public ServiceHandler(Looper looper) {
+            super(looper);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            final int delay = 25000;
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Awareness.getSnapshotClient(context).getHeadphoneState()
+                            .addOnSuccessListener(new OnSuccessListener<HeadphoneStateResponse>() {
+                                @Override
+                                public void onSuccess(HeadphoneStateResponse headphoneStateResponse) {
+                                    HeadphoneState headphoneState = headphoneStateResponse.getHeadphoneState();
+                                    boolean pluggedIn = headphoneState.getState() == HeadphoneState.PLUGGED_IN;
+                                    DatabaseProvider.addDataHeadphone(context, "notifications", pluggedIn);
+
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    System.out.println("Could not get headphone state: " + e);
+                                }
+                            });
+                    handler.postDelayed(this, delay);
+                }
+            }, delay);
+            stopSelf(msg.arg1);
+        }
     }
 }

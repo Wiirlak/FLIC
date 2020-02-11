@@ -1,6 +1,6 @@
 package fr.esgi.flic.utils;
 
-import androidx.annotation.NonNull;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -14,15 +14,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
 import fr.esgi.flic.object.Notifications;
 import fr.esgi.flic.object.User;
-import android.util.Log;
 
 
 public class FirebaseHelper {
-    private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-    public FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final String TAG = "AppWidgetProvider";
+    public FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
 
     public Object get(String collection, String field, String value) {
         try {
@@ -33,7 +33,7 @@ public class FirebaseHelper {
         return null;
     }
 
-    public Object get(String collection, String id){
+    public Object get(String collection, String id) {
         Task result;
         try {
             result = db.collection(collection).document(id).get();
@@ -91,7 +91,7 @@ public class FirebaseHelper {
         Log.d("Android FirebaseHelper", "getting notifications...");
         Task result;
         try {
-            if(limit > 0)
+            if (limit > 0)
                 result = db.collection("notifications").whereEqualTo("type", type).limit(limit).get();
             else
                 result = db.collection("notifications").whereEqualTo("type", type).get();
@@ -103,7 +103,7 @@ public class FirebaseHelper {
         return null;
     }
 
-    public boolean exist(String collection, String id){
+    public boolean exist(String collection, String id) {
         final boolean[] existing = new boolean[1];
         DocumentReference docRef = db.collection(collection).document(id);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

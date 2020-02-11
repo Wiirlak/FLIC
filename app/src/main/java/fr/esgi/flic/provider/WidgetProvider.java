@@ -10,8 +10,6 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import androidx.annotation.Nullable;
-
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
@@ -20,6 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import androidx.annotation.Nullable;
 import fr.esgi.flic.R;
 import fr.esgi.flic.activities.MainActivity;
 import fr.esgi.flic.object.User;
@@ -44,8 +43,8 @@ public class WidgetProvider extends AppWidgetProvider {
         User coupled_id = SPHelper.getSavedUserFromPreference(context, User.class);
         final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_flic);
 
-        if(coupled_id.getPartner_id() == null || coupled_id.getPartner_id().equals(""))
-                return;
+        if (coupled_id.getPartner_id() == null || coupled_id.getPartner_id().equals(""))
+            return;
         final DocumentReference docRef = db.collection("user").document(coupled_id.getPartner_id());
         final CollectionReference notifications = db.collection("notifications");
 
@@ -61,7 +60,7 @@ public class WidgetProvider extends AppWidgetProvider {
                             return;
                         }
 
-                        if(queryDocumentSnapshots.getDocuments().size() > 0) {
+                        if (queryDocumentSnapshots.getDocuments().size() > 0) {
                             views.setTextViewText(R.id.widget_description, "Dernière notification reçue" + DateFormat.format(" le dd/MM/yyyy à HH:mm:ss", queryDocumentSnapshots.getDocuments().get(0).getDate("date")) + " :");
                             views.setTextViewText(R.id.notif_title, Tools.titleSwitch(queryDocumentSnapshots.getDocuments().get(0).get("type").toString()));
                             views.setTextViewText(R.id.notif_value, Tools.notificationSwitch(queryDocumentSnapshots.getDocuments().get(0).get("type").toString(), queryDocumentSnapshots.getDocuments().get(0).get("value").toString()));
@@ -71,7 +70,7 @@ public class WidgetProvider extends AppWidgetProvider {
                     }
                 });
 
-        for (int i=0; i<N; i++) {
+        for (int i = 0; i < N; i++) {
             int appWidgetId = appWidgetIds[i];
 
             Log.d(TAG, "onUpdate");

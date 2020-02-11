@@ -56,19 +56,17 @@ public class Tools {
     }
 
     public static String headphoneSwitch(String value) {
-        if(value.equalsIgnoreCase("yes")) {
+        if (value.equalsIgnoreCase("yes")) {
             return "Branché";
-        }
-        else if(value.equalsIgnoreCase("no")) {
+        } else if (value.equalsIgnoreCase("no")) {
             return "Débranché";
-        }
-        else {
+        } else {
             return "État des écouteurs inconnu";
         }
     }
 
     public static String getLocalisationURL(String value) {
-        if(value.length() < 29) {
+        if (value.length() < 29) {
             Log.d("Tools", "Can't get localisation from value : string too short");
             return "";
         }
@@ -78,7 +76,7 @@ public class Tools {
     }
 
     public static int min(int to_test, int min) {
-        if(to_test <= min)
+        if (to_test <= min)
             return to_test;
         else
             return min;

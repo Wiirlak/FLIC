@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
-
 import fr.esgi.flic.R;
 import fr.esgi.flic.object.User;
 import fr.esgi.flic.utils.SPHelper;
@@ -23,7 +22,7 @@ public class DatabaseProvider {
     private static final String TAG = "DatabaseProvider";
 
 
-    public static void addDataLocation(Context context, String table, double lat, double longi, double alt){
+    public static void addDataLocation(Context context, String table, double lat, double longi, double alt) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         User u = SPHelper.getSavedUserFromPreference(context, User.class);
         String coupled_id = u.getId();
@@ -31,8 +30,8 @@ public class DatabaseProvider {
         Map<String, Object> user = new HashMap<>();
         user.put("date", new Date());
         user.put("type", context.getResources().getString(R.string.LOCALISATION_TEXT));
-        user.put("user_id",docRef); // user_id
-        user.put("value", "lat:"+lat+";long:"+longi+";alt:"+alt);
+        user.put("user_id", docRef); // user_id
+        user.put("value", "lat:" + lat + ";long:" + longi + ";alt:" + alt);
 
         db.collection(table)
                 .add(user)
@@ -49,7 +48,8 @@ public class DatabaseProvider {
                     }
                 });
     }
-    public static void addDataHeadphone(Context context,String table, boolean plugged){
+
+    public static void addDataHeadphone(Context context, String table, boolean plugged) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         User u = SPHelper.getSavedUserFromPreference(context, User.class);
         String coupled_id = u.getId();
@@ -76,7 +76,7 @@ public class DatabaseProvider {
                 });
     }
 
-    public static void addDataState(Context context,String table, String activity){
+    public static void addDataState(Context context, String table, String activity) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         User u = SPHelper.getSavedUserFromPreference(context, User.class);
         String coupled_id = u.getId();

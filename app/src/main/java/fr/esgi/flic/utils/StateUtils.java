@@ -1,9 +1,9 @@
 package fr.esgi.flic.utils;
 
 public class StateUtils {
-    public static String returnStateToString(int state){
+    public static String returnStateToString(int state) {
 
-        switch(state){
+        switch (state) {
             case 0:
                 return "IN VEHICULE";
             case 1:

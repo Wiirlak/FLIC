@@ -3,16 +3,11 @@ package fr.esgi.flic.activities.fragments;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.format.DateFormat;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
@@ -21,6 +16,9 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import fr.esgi.flic.R;
 import fr.esgi.flic.object.User;
 import fr.esgi.flic.utils.SPHelper;
@@ -28,8 +26,8 @@ import fr.esgi.flic.utils.Tools;
 
 public class LocalisationList extends Fragment {
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
     final private String TAG = "LocalisationList";
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Nullable
     @Override
@@ -61,8 +59,8 @@ public class LocalisationList extends Fragment {
                         }
 
                         list.setText("");
-                        if(!queryDocumentSnapshots.isEmpty()) {
-                            if(getActivity() != null) {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            if (getActivity() != null) {
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {

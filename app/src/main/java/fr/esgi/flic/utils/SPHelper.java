@@ -18,7 +18,7 @@ public class SPHelper {
         sharedPreferencesEditor.apply();
     }
 
-    public static void saveUserToSharedPreference(Context context,  Object object) {
+    public static void saveUserToSharedPreference(Context context, Object object) {
         String preferenceFileName = "FLIC_user";
         String serializedObjectKey = "User";
         saveObjectToSharedPreference(context, preferenceFileName, serializedObjectKey, object);

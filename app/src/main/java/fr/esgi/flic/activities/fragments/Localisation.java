@@ -1,23 +1,21 @@
 package fr.esgi.flic.activities.fragments;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import fr.esgi.flic.R;
 
 public class Localisation extends Fragment {
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
     final private String TAG = "FragmentLocalisation";
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public static Localisation newInstance() {
         return new Localisation();

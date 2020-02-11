@@ -1,4 +1,3 @@
-
 package fr.esgi.flic.services;
 
 import android.app.Service;
@@ -10,7 +9,6 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.awareness.Awareness;
 import com.google.android.gms.awareness.snapshot.LocationResponse;
@@ -22,6 +20,9 @@ import fr.esgi.flic.provider.DatabaseProvider;
 
 public class Locations extends Service {
     public static Context context;
+    private Looper serviceLooper;
+    private ServiceHandler serviceHandler;
+
     public Locations() {
         context = this;
     }
@@ -29,40 +30,6 @@ public class Locations extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
-    }
-
-    private Looper serviceLooper;
-    private ServiceHandler serviceHandler;
-
-    private final class ServiceHandler extends Handler {
-        public ServiceHandler(Looper looper) {
-            super(looper);
-        }
-        @Override
-        public void handleMessage(Message msg) {
-            final int delay = 30000;
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable(){
-                public void run(){
-                    Awareness.getSnapshotClient(Locations.this).getLocation()
-                            .addOnSuccessListener(new OnSuccessListener<LocationResponse>() {
-                                @Override
-                                public void onSuccess(LocationResponse locationResponse) {
-                                    android.location.Location loc = locationResponse.getLocation();
-                                    DatabaseProvider.addDataLocation(context,"notifications", loc.getLatitude(),loc.getLongitude(),loc.getAltitude());
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    System.out.println("Could not get Localisation state: " + e);
-                                }
-                            });
-                    handler.postDelayed(this, delay);
-                }
-            }, delay);
-            stopSelf(msg.arg1);
-        }
     }
 
     @Override
@@ -88,5 +55,37 @@ public class Locations extends Service {
     public void onDestroy() {
         Log.i("Localisation service :", "Localisation done");
 
+    }
+
+    private final class ServiceHandler extends Handler {
+        public ServiceHandler(Looper looper) {
+            super(looper);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            final int delay = 30000;
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    Awareness.getSnapshotClient(Locations.this).getLocation()
+                            .addOnSuccessListener(new OnSuccessListener<LocationResponse>() {
+                                @Override
+                                public void onSuccess(LocationResponse locationResponse) {
+                                    android.location.Location loc = locationResponse.getLocation();
+                                    DatabaseProvider.addDataLocation(context, "notifications", loc.getLatitude(), loc.getLongitude(), loc.getAltitude());
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    System.out.println("Could not get Localisation state: " + e);
+                                }
+                            });
+                    handler.postDelayed(this, delay);
+                }
+            }, delay);
+            stopSelf(msg.arg1);
+        }
     }
 }
