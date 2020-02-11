@@ -9,7 +9,6 @@ import java.lang.reflect.Type;
 
 public class SPHelper {
 
-    //Usage : saveObjectToSharedPreference(context, "mPreference", "mObjectKey", mObject);
     public static void saveObjectToSharedPreference(Context context, String preferenceFileName, String serializedObjectKey, Object object) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(preferenceFileName, 0);
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
@@ -25,7 +24,6 @@ public class SPHelper {
         saveObjectToSharedPreference(context, preferenceFileName, serializedObjectKey, object);
     }
 
-    //Usage : getSavedObjectFromPreference(context, "mPreference", "mObjectKey", (Type) SampleClass.class)
     public static <GenericClass> GenericClass getSavedObjectFromPreference(Context context, String preferenceFileName, String preferenceKey, Type classType) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(preferenceFileName, 0);
         if (sharedPreferences.contains(preferenceKey)) {

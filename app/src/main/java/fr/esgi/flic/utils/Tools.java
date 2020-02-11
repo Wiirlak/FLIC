@@ -74,7 +74,6 @@ public class Tools {
         }
         String latitude = value.substring(4, 14);
         String longitude = value.substring(20, 29);
-        // Log.d("getLocalisationURL", "https://www.google.com/maps/search/?api=1&query=" + latitude + "," + longitude);
         return "https://www.google.com/maps/search/?api=1&query=" + latitude + "," + longitude;
     }
 

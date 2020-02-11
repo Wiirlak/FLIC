@@ -53,7 +53,7 @@ public class Headphone extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        TextView tv = (TextView) getView().findViewById(R.id.latest_headphone_state_notifications);
+        TextView tv = getView().findViewById(R.id.latest_headphone_state_notifications);
         User user = SPHelper.getSavedUserFromPreference(getContext(), User.class);
 
         db.collection("notifications")

@@ -38,7 +38,7 @@ public class StateFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        TextView tv = (TextView) getView().findViewById(R.id.latest_states_notifications);
+        TextView tv = getView().findViewById(R.id.latest_states_notifications);
         User user = SPHelper.getSavedUserFromPreference(getContext(), User.class);
 
 

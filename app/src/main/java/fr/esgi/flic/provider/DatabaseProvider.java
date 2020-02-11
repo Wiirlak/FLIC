@@ -24,7 +24,6 @@ public class DatabaseProvider {
 
 
     public static void addDataLocation(Context context, String table, double lat, double longi, double alt){
-        //ADD DATA TO FIREBASE
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         User u = SPHelper.getSavedUserFromPreference(context, User.class);
         String coupled_id = u.getId();
@@ -35,7 +34,6 @@ public class DatabaseProvider {
         user.put("user_id",docRef); // user_id
         user.put("value", "lat:"+lat+";long:"+longi+";alt:"+alt);
 
-// Add a new document with a generated ID
         db.collection(table)
                 .add(user)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -52,7 +50,6 @@ public class DatabaseProvider {
                 });
     }
     public static void addDataHeadphone(Context context,String table, boolean plugged){
-        //ADD DATA TO FIREBASE
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         User u = SPHelper.getSavedUserFromPreference(context, User.class);
         String coupled_id = u.getId();
@@ -63,7 +60,6 @@ public class DatabaseProvider {
         user.put("user_id", docRef); // user_id
         user.put("value", plugged ? "Yes" : "No");
 
-// Add a new document with a generated ID
         db.collection(table)
                 .add(user)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -81,7 +77,6 @@ public class DatabaseProvider {
     }
 
     public static void addDataState(Context context,String table, String activity){
-        //ADD DATA TO FIREBASE
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         User u = SPHelper.getSavedUserFromPreference(context, User.class);
         String coupled_id = u.getId();
@@ -92,7 +87,6 @@ public class DatabaseProvider {
         user.put("user_id", docRef); // user_id
         user.put("value", activity);
 
-// Add a new document with a generated ID
         db.collection(table)
                 .add(user)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

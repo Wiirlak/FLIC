@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -21,7 +20,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import fr.esgi.flic.R;
 import fr.esgi.flic.activities.fragments.HeadphoneList;
@@ -36,7 +34,6 @@ import fr.esgi.flic.utils.FirebaseHelper;
 import fr.esgi.flic.utils.SPHelper;
 
 public class MainActivity extends AppCompatActivity {
-    final static private String TAG = "AndroidMainActivity";
     FirebaseHelper db = new FirebaseHelper();
     FirebaseFirestore database = FirebaseFirestore.getInstance();
 
@@ -75,8 +72,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = getString(R.string.channel_name);
             String description = getString(R.string.channel_description);

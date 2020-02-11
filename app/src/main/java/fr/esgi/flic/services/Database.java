@@ -14,11 +14,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,7 +43,6 @@ public class Database extends Service {
     public void onCreate() {
         User u = SPHelper.getSavedUserFromPreference(context, User.class);
         String coupled_id = u.getPartner_id();
-//        String coupled_id = "CuWf87";
         final DocumentReference docRef = db.collection("user").document(coupled_id);
         db.collection("notifications")
                 .whereEqualTo("user_id", docRef)

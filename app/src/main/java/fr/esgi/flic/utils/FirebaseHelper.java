@@ -111,11 +111,7 @@ public class FirebaseHelper {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        existing[0] = true;
-                    } else {
-                        existing[0] = false;
-                    }
+                    existing[0] = document.exists();
                 } else {
                     existing[0] = false;
                 }

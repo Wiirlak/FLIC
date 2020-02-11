@@ -38,10 +38,10 @@ public class StateList extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        TextView title = (TextView) view.findViewById(R.id.list_title);
+        TextView title = view.findViewById(R.id.list_title);
         title.setText("Liste des derniers moyens de transport : ");
 
-        TextView list = (TextView) view.findViewById(R.id.notification_list);
+        TextView list = view.findViewById(R.id.notification_list);
         User user = SPHelper.getSavedUserFromPreference(getContext(), User.class);
         final DocumentReference docRef = db.collection("user").document(user.getPartner_id());
 
