@@ -41,7 +41,7 @@ public class State extends Service {
         }
         @Override
         public void handleMessage(Message msg) {
-            final int delay = 22000; //milliseconds
+            final int delay = 22000;
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable(){
                 public void run(){
@@ -53,7 +53,7 @@ public class State extends Service {
                             .addOnSuccessListener(detectedActivityResult -> {
                                 ActivityRecognitionResult ar = detectedActivityResult.getActivityRecognitionResult();
                                 DetectedActivity probableActivity = ar.getMostProbableActivity();
-                                if(probableActivity.getType() != 4){// UNKNOWN
+                                if(probableActivity.getType() != 4){
                                     if(probableActivity.getConfidence() >= 50){
                                         DatabaseProvider.addDataState(context,"notifications", StateUtils.returnStateToString(probableActivity.getType()));
 
